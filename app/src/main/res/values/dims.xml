@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolBarElevation">4dp</dimen>
+    <dimen name="topBarHeight">56dp</dimen>
+
+    <dimen name="appNameTextSize">22sp</dimen>
+</resources>
