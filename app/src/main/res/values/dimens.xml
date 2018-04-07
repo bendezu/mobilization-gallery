@@ -3,4 +3,12 @@
     <dimen name="text_margin">16dp</dimen>
 
     <dimen name="image_item_margin">1dp</dimen>
+
+    <dimen name="toolBarElevation">4dp</dimen>
+    <dimen name="topBarHeight">56dp</dimen>
+
+    <dimen name="appNameTextSize">22sp</dimen>
+
+    <integer name="galleryColumns">2</integer>
+
 </resources>

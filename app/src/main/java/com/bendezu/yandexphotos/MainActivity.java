@@ -10,11 +10,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GalleryFragment galleryFragment = new GalleryFragment();
+        if  (savedInstanceState == null) {
+            GalleryFragment galleryFragment = new GalleryFragment();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, galleryFragment)
-                .commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, galleryFragment)
+                    .commit();
+        }
+
     }
 }

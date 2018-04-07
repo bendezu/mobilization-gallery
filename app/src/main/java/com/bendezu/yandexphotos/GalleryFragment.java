@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import com.bendezu.yandexphotos.dummy.DummyContent;
 
 public class GalleryFragment extends Fragment {
 
-    private int mColumnCount = 2;
+    private final String LOG_TAG = "GalleryFragment";
+
+    int mColumnCount;
 
     public GalleryFragment() {
     }
@@ -28,6 +31,10 @@ public class GalleryFragment extends Fragment {
         Context context = view.getContext();
 
         RecyclerView recyclerView = view.findViewById(R.id.gallery_recycler_view);
+        mColumnCount = getResources().getInteger(R.integer.galleryColumns);
+
+        Log.d(LOG_TAG, "SET COLUMN COUNT TO " + mColumnCount);
+
         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         recyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS));
         return view;
