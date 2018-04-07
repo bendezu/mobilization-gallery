@@ -9,4 +9,6 @@
     <color name="colorImagePlaceHolder">#BDBDBD</color>
 
     <color name="colorTextDark">#000000</color>
+
+    <color name="colorImageDetailBackground">#000000</color>
 </resources>
