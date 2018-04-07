@@ -41,6 +41,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
+        SquareImageView mImage;
         public final TextView mIdView;
         public final TextView mContentView;
         public DummyItem mItem;
@@ -48,8 +49,9 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.item_number);
+            mContentView = view.findViewById(R.id.content);
+            mImage = view.findViewById(R.id.item_image);
         }
 
         @Override

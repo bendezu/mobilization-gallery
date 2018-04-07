@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/image_item_margin">
+
+    <com.bendezu.yandexphotos.SquareImageView
+        android:id="@+id/item_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorImagePlaceHolder" />
 
     <TextView
         android:id="@+id/item_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_gravity="top"
+        tools:text="1"/>
 
     <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-</LinearLayout>
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_gravity="bottom"
+        tools:text="Item 1"/>
+</FrameLayout>

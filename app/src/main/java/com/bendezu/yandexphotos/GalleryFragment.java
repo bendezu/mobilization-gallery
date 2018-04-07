@@ -15,7 +15,7 @@ import com.bendezu.yandexphotos.dummy.DummyContent;
 
 public class GalleryFragment extends Fragment {
 
-    private int mColumnCount = 1;
+    private int mColumnCount = 2;
 
     public GalleryFragment() {
     }
@@ -25,14 +25,10 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.gallery_recycler_view);
-        // Set the adapter
         Context context = view.getContext();
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
+
+        RecyclerView recyclerView = view.findViewById(R.id.gallery_recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         recyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS));
         return view;
     }
