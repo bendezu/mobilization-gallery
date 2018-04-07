@@ -11,23 +11,26 @@ import com.bendezu.yandexphotos.dummy.DummyContent.DummyItem;
 import java.util.List;
 
 
-public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ViewHolder> {
+public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {
 
     private final List<DummyItem> mValues;
+    private OnImageClickListener mClickHandler;
 
-    public ImageRecyclerViewAdapter(List<DummyItem> items) {
+    public ImageRecyclerViewAdapter(List<DummyItem> items, OnImageClickListener clickHandler) {
         mValues = items;
+        mClickHandler = clickHandler;
+
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_image, parent, false);
-        return new ViewHolder(view);
+        return new ImageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
@@ -39,19 +42,33 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    // OnImageClickListener interface, calls a method in the host activity named onImageSelected
+    public interface OnImageClickListener {
+        void onImageSelected(int position);
+    }
+
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         public final View mView;
         SquareImageView mImage;
         public final TextView mIdView;
         public final TextView mContentView;
         public DummyItem mItem;
 
-        public ViewHolder(View view) {
+        public ImageViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = view.findViewById(R.id.item_number);
             mContentView = view.findViewById(R.id.content);
             mImage = view.findViewById(R.id.item_image);
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int idFromView = Integer.valueOf(mIdView.getText().toString());
+            mClickHandler.onImageSelected(idFromView);
         }
 
         @Override

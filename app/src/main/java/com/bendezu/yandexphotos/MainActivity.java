@@ -2,8 +2,9 @@ package com.bendezu.yandexphotos;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ImageRecyclerViewAdapter.OnImageClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,5 +20,10 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+    }
+
+    @Override
+    public void onImageSelected(int position) {
+        Toast.makeText(this, "Click to Image: " + position, Toast.LENGTH_SHORT).show();
     }
 }

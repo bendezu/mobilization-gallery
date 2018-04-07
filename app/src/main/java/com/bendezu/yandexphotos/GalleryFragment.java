@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +16,23 @@ import com.bendezu.yandexphotos.dummy.DummyContent;
 public class GalleryFragment extends Fragment {
 
     private final String LOG_TAG = "GalleryFragment";
+    private int mColumnCount;
+    private ImageRecyclerViewAdapter.OnImageClickListener mActivity;
 
-    int mColumnCount;
+    public GalleryFragment() { }
 
-    public GalleryFragment() {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            mActivity = (ImageRecyclerViewAdapter.OnImageClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnImageClickListener");
+        }
     }
 
     @Override
@@ -36,8 +48,14 @@ public class GalleryFragment extends Fragment {
         Log.d(LOG_TAG, "SET COLUMN COUNT TO " + mColumnCount);
 
         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        recyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS, mActivity));
+
         return view;
     }
 
+    @Override
+    public void onDetach() {
+        mActivity = null;
+        super.onDetach();
+    }
 }
