@@ -2,8 +2,10 @@ package com.bendezu.yandexphotos;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ public class GalleryFragment extends Fragment {
     private final String LOG_TAG = "GalleryFragment";
     private int mColumnCount;
     private ImageRecyclerViewAdapter.OnImageClickListener mActivity;
+    private String mToken;
+    private RecyclerView mRecyclerView;
 
     public GalleryFragment() { }
 
@@ -25,7 +29,7 @@ public class GalleryFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        Log.d(LOG_TAG, "GalleryFragment: OnAttach");
+        Log.d(LOG_TAG, "OnAttach");
 
         // This makes sure that the host activity has implemented the callback interface
         // If not, it throws an exception
@@ -44,21 +48,23 @@ public class GalleryFragment extends Fragment {
 
         Context context = view.getContext();
 
-        RecyclerView recyclerView = view.findViewById(R.id.gallery_recycler_view);
+        String token = getArguments().getString("token");
+        if (token != null) mToken = token;
+
+        mRecyclerView = view.findViewById(R.id.gallery_recycler_view);
         mColumnCount = getResources().getInteger(R.integer.galleryColumns);
 
-        Log.d(LOG_TAG, "SET COLUMN COUNT TO " + mColumnCount);
+        Log.d(LOG_TAG, "set column count to " + mColumnCount);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        recyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS, mActivity));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS, mActivity));
 
         return view;
     }
 
     @Override
     public void onDetach() {
-
-        Log.d(LOG_TAG, "GalleryFragment: OnDetach");
+        Log.d(LOG_TAG, "OnDetach");
 
         mActivity = null;
         super.onDetach();

@@ -1,8 +1,8 @@
 package com.bendezu.yandexphotos;
 
 
+import android.content.Context;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,19 +14,36 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import java.net.URI;
-
 
 public class AuthFragment extends Fragment {
 
     public static final String LOG_TAG = "AuthFragment";
 
-    public AuthFragment() {
-        // Required empty public constructor
-    }
-
     private ProgressBar mLoadingIndicator;
     private WebView mWebView;
+    private OnAuthorizationListener mActivity;
+
+    // OnImageClickListener interface, calls a method in the host activity named OnAuthorizationSuccess
+    public interface OnAuthorizationListener {
+        void OnAuthorizationSuccess(String token);
+    }
+
+    public AuthFragment() { }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(LOG_TAG, "OnAttach");
+
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            mActivity = (OnAuthorizationListener)context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnImageClickListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +89,7 @@ public class AuthFragment extends Fragment {
                     if (accessToken != null) {
                         Log.d(LOG_TAG, "Access token: " + accessToken);
                         //Handle token
-
+                        mActivity.OnAuthorizationSuccess(accessToken);
                         return true;
                     }
                 }
@@ -81,11 +98,18 @@ public class AuthFragment extends Fragment {
             }
         });
 
-        //mWebView.loadUrl(AuthUtils.getAuthUrl());
-        mWebView.loadUrl(AuthUtils.getForceAuthUrl());
+        mWebView.loadUrl(AuthUtils.getAuthUrl());
+        //mWebView.loadUrl(AuthUtils.getForceAuthUrl());
 
         return view;
 
     }
 
+    @Override
+    public void onDetach() {
+        Log.d(LOG_TAG, "OnDetach");
+
+        mActivity = null;
+        super.onDetach();
+    }
 }

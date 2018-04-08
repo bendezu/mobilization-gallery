@@ -9,11 +9,14 @@ import android.widget.Toast;
 
 import com.yandex.disk.rest.RestClient;
 
-public class MainActivity extends AppCompatActivity implements ImageRecyclerViewAdapter.OnImageClickListener {
+public class MainActivity extends AppCompatActivity implements
+        ImageRecyclerViewAdapter.OnImageClickListener,
+        AuthFragment.OnAuthorizationListener{
 
     private static final String LOG_TAG = "MainActivity";
 
     private GalleryFragment mGalleryFragment;
+    private String mToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,21 +24,12 @@ public class MainActivity extends AppCompatActivity implements ImageRecyclerView
         setContentView(R.layout.activity_main);
 
         if  (savedInstanceState == null) {
-
-            //Testing Authorization
+            //Authorization
             AuthFragment authFragment = new AuthFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, authFragment)
                     .commit();
-
-
-//            mGalleryFragment = new GalleryFragment();
-//
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .add(R.id.fragment_container, mGalleryFragment)
-//                    .commit();
         }
 
     }
@@ -53,4 +47,18 @@ public class MainActivity extends AppCompatActivity implements ImageRecyclerView
                 .commit();
     }
 
+    @Override
+    public void OnAuthorizationSuccess(String token) {
+        mToken = token;
+
+        mGalleryFragment = new GalleryFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("token", token);
+        mGalleryFragment.setArguments(bundle);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, mGalleryFragment)
+                .commit();
+    }
 }

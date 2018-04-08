@@ -16,10 +16,14 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     private final List<DummyItem> mValues;
     private OnImageClickListener mClickHandler;
 
+    // OnImageClickListener interface, calls a method in the host activity named onImageSelected
+    public interface OnImageClickListener {
+        void onImageSelected(int position);
+    }
+
     public ImageRecyclerViewAdapter(List<DummyItem> items, OnImageClickListener clickHandler) {
         mValues = items;
         mClickHandler = clickHandler;
-
     }
 
     @Override
@@ -40,11 +44,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     @Override
     public int getItemCount() {
         return mValues.size();
-    }
-
-    // OnImageClickListener interface, calls a method in the host activity named onImageSelected
-    public interface OnImageClickListener {
-        void onImageSelected(int position);
     }
 
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
