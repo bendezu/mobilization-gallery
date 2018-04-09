@@ -56,8 +56,8 @@ public class GalleryFragment extends Fragment {
 
         Log.d(LOG_TAG, "set column count to " + mColumnCount);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS, mActivity));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
 
         return view;
     }

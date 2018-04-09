@@ -75,6 +75,16 @@ public class AuthFragment extends Fragment {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = request.getUrl();
+                return shouldOverrideUrlLoading(view, uri);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Uri uri = Uri.parse(url);
+                return shouldOverrideUrlLoading(view, uri);
+            }
+
+            private boolean shouldOverrideUrlLoading(WebView view, Uri uri){
                 String stringUri = uri.toString();
                 Log.d(LOG_TAG, "shouldOverrideUrlLoading: " + uri);
 
@@ -93,7 +103,6 @@ public class AuthFragment extends Fragment {
                         return true;
                     }
                 }
-
                 return false;
             }
         });

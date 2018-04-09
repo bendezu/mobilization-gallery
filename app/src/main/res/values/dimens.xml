@@ -9,6 +9,6 @@
 
     <dimen name="appNameTextSize">22sp</dimen>
 
-    <integer name="galleryColumns">2</integer>
+    <integer name="galleryColumns">3</integer>
 
 </resources>

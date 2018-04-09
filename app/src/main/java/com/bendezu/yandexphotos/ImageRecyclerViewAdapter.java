@@ -1,6 +1,7 @@
 package com.bendezu.yandexphotos;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import java.util.List;
 
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {
+
+    private final String LOG_TAG = "RecyclerViewAdapter";
 
     private final List<DummyItem> mValues;
     private OnImageClickListener mClickHandler;
@@ -28,6 +31,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(LOG_TAG, "onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_image, parent, false);
         return new ImageViewHolder(view);
