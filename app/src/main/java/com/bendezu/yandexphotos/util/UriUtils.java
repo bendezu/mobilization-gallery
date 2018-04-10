@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos;
+package com.bendezu.yandexphotos.util;
 
 import android.net.Uri;
 

@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos;
+package com.bendezu.yandexphotos.fragment;
 
 
 import android.os.Bundle;
@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bendezu.yandexphotos.R;
+
 
 public class ImageDetailFragment extends Fragment {
 
-
-    public ImageDetailFragment() {
-        // Required empty public constructor
-    }
-
+    public ImageDetailFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

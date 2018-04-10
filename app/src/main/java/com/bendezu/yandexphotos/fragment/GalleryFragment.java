@@ -1,18 +1,20 @@
-package com.bendezu.yandexphotos;
+package com.bendezu.yandexphotos.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bendezu.yandexphotos.dummy.DummyContent;
+import com.bendezu.yandexphotos.data.ImageContent;
+import com.bendezu.yandexphotos.ImageRecyclerViewAdapter;
+import com.bendezu.yandexphotos.R;
+
+import java.util.List;
 
 
 public class GalleryFragment extends Fragment {
@@ -20,7 +22,6 @@ public class GalleryFragment extends Fragment {
     private final String LOG_TAG = "GalleryFragment";
     private int mColumnCount;
     private ImageRecyclerViewAdapter.OnImageClickListener mActivity;
-    private String mToken;
     private RecyclerView mRecyclerView;
 
     public GalleryFragment() { }
@@ -48,15 +49,12 @@ public class GalleryFragment extends Fragment {
 
         Context context = view.getContext();
 
-        String token = getArguments().getString("token");
-        if (token != null) mToken = token;
-
         mRecyclerView = view.findViewById(R.id.gallery_recycler_view);
-        mColumnCount = getResources().getInteger(R.integer.galleryColumns);
 
+        mColumnCount = getResources().getInteger(R.integer.galleryColumns);
         Log.d(LOG_TAG, "set column count to " + mColumnCount);
 
-        mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(DummyContent.ITEMS, mActivity));
+        mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(this, getArguments(), mActivity));
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
 
         return view;

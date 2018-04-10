@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos;
+package com.bendezu.yandexphotos.fragment;
 
 
 import android.content.Context;
@@ -13,6 +13,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
+import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.util.AuthUtils;
+import com.bendezu.yandexphotos.util.UriUtils;
 
 
 public class AuthFragment extends Fragment {
