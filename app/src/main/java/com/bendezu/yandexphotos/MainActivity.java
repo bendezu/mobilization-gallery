@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements
             try {
                 ResourcesArgs args = new ResourcesArgs.Builder()
                         .setMediaType("image")
+                        .setLimit(Integer.MAX_VALUE)
+                        //.setPreviewSize("S")
+                        .setPreviewCrop(true)
                         .build();
                 ResourceList resources = client.getLastUploadedResources(args);
                 List<Resource> items = resources.getItems();

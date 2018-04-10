@@ -11,8 +11,10 @@ import android.webkit.WebView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.TransitionOptions;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.ArrayList;
 
@@ -57,7 +59,10 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         GlideUrl request = new GlideUrl(preview, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + mToken)
                 .build());
-        mRequestManager.load(request).into(holder.image);
+        mRequestManager
+                .load(request)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(holder.image);
     }
 
     @Override
