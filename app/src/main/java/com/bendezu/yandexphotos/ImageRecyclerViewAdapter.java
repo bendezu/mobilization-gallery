@@ -1,31 +1,20 @@
 package com.bendezu.yandexphotos;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ImageView;
 
-import com.bendezu.yandexphotos.util.UriUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.RequestManager;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.BitSet;
 
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {
@@ -35,6 +24,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     private final ArrayList<String> mPaths;
     private final ArrayList<String> mPreviews;
     private final RequestManager mRequestManager;
+    private final String mToken;
 
     private OnImageClickListener mClickHandler;
 
@@ -47,6 +37,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         mRequestManager = Glide.with(fragment);
         mPaths = bundle.getStringArrayList("paths");
         mPreviews = bundle.getStringArrayList("previews");
+        mToken = bundle.getString("token");
         mClickHandler = clickHandler;
     }
 
@@ -63,7 +54,10 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         holder.position = position;
         //load Image
         String preview = mPreviews.get(position);
-        mRequestManager.load("http://i.imgur.com/zuG2bGQ.jpg").into(holder.image);
+        GlideUrl request = new GlideUrl(preview, new LazyHeaders.Builder()
+                .addHeader("Authorization", "OAuth " + mToken)
+                .build());
+        mRequestManager.load(request).into(holder.image);
     }
 
     @Override
@@ -76,8 +70,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         public final View view;
         public int position;
         SquareImageView image;
-        WebView webView;
-
 
         public ImageViewHolder(View view) {
             super(view);
