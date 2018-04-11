@@ -1,20 +1,35 @@
 package com.bendezu.yandexphotos;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bendezu.yandexphotos.fragment.AuthFragment;
 import com.bendezu.yandexphotos.fragment.GalleryFragment;
 import com.bendezu.yandexphotos.fragment.ImageDetailFragment;
 import com.bendezu.yandexphotos.util.AuthUtils;
+import com.bendezu.yandexphotos.util.UriUtils;
 import com.yandex.disk.rest.Credentials;
 import com.yandex.disk.rest.DownloadListener;
 import com.yandex.disk.rest.ResourcesArgs;
@@ -33,27 +48,59 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        ImageRecyclerViewAdapter.OnImageClickListener,
-        AuthFragment.OnAuthorizationListener{
+        ImageRecyclerViewAdapter.OnImageClickListener {
 
     private static final String LOG_TAG = "MainActivity";
-
-    private GalleryFragment mGalleryFragment;
-    private String mToken;
+    private static final int REQUEST_CODE_ACCOUNT_MANAGER = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if  (savedInstanceState == null) {
-            //Authorization
-            AuthFragment authFragment = new AuthFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, authFragment)
-                    .commit();
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        String accessToken = preferences.getString(getString(R.string.saved_access_token_key), null);
+        if (accessToken == null) {
+            if  (savedInstanceState == null) {
+                //Authorization
+                AuthFragment authFragment = new AuthFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, authFragment)
+                        .commit();
+            }
+        } else {
+            OnAuthorizationSuccess(accessToken);
         }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Uri uri = intent.getData();
+        if (uri != null &&
+                uri.toString().startsWith(AuthUtils.REDIRECT_URI)){
+
+            String error = UriUtils.getFragmentParameter(uri, "error");
+            if (error != null) {
+                Log.d(LOG_TAG, "Permission error: " + error);
+                Toast.makeText(this, "DAY DOSTUP PIDOR", Toast.LENGTH_SHORT).show();
+
+            }
+            String accessToken = UriUtils.getFragmentParameter(uri, "access_token");
+            if (accessToken != null) {
+                Log.d(LOG_TAG, "Access token: " + accessToken);
+                //Handle token
+                // save to SharedPreferences
+                getPreferences(Context.MODE_PRIVATE)
+                        .edit()
+                        .putString(getString(R.string.saved_access_token_key), accessToken)
+                        .apply();
+
+                OnAuthorizationSuccess(accessToken);
+            }
+        }
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -69,9 +116,7 @@ public class MainActivity extends AppCompatActivity implements
                 .commit();
     }
 
-    @Override
     public void OnAuthorizationSuccess(final String token) {
-        mToken = token;
         new AsyncTaskRunner().execute(token);
     }
 
@@ -110,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(Bundle bundle) {
-            mGalleryFragment = new GalleryFragment();
+            GalleryFragment mGalleryFragment = new GalleryFragment();
             mGalleryFragment.setArguments(bundle);
 
             getSupportFragmentManager()

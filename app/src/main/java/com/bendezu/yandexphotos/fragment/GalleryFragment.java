@@ -29,9 +29,7 @@ public class GalleryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         Log.d(LOG_TAG, "OnAttach");
-
         // This makes sure that the host activity has implemented the callback interface
         // If not, it throws an exception
         try {
