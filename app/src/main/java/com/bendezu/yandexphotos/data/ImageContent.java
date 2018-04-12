@@ -1,6 +1,8 @@
 package com.bendezu.yandexphotos.data;
 
 import android.accounts.AccountManager;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -15,50 +17,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ImageContent {
+public class ImageContent implements Parcelable {
 
-    private static final String LOG_TAG = "ImageContent";
-    private static final int COUNT = 25;
-    private static String TOKEN;
+    private String path;
+    private String preview;
 
-    public static List<ImageData> getImageData(String token){
-        TOKEN = token;
+    static Parcelable.Creator CREATOR;
 
-        List<ImageData> images = new ArrayList<>(25);
-        for (int i = 1; i <= COUNT; i++) {
-            images.add(fetchImageData(i));
-        }
-        return images;
+    public ImageContent(String path, String preview) {
+        this.path = path;
+        this.preview = preview;
     }
 
-    private static ImageData fetchImageData(int position) {
-        String id = String.valueOf(position);
-        String content = "Item " + position;
-        return new ImageData(id, content);
+    public String getPath() {
+        return path;
     }
 
+    public String getPreview() {
+        return preview;
+    }
 
-    public static class ImageData {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-        private final String id;
-        private final String content;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
 
-        public ImageData(String id, String content) {
-            this.id = id;
-            this.content = content;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        @Override
-        public String toString() {
-            return content;
-        }
     }
 }

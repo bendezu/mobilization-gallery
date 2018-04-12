@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_rainbow" />
-                            <entry key="sourceFile" value="C:\Users\bende\Desktop\Photos\Rainbow.svg" />
+                            <entry key="outputName" value="ic_foreground" />
+                            <entry key="sourceFile" value="C:\Users\bende\Desktop\Photos\new_foreground.svg" />
                           </map>
                         </option>
                       </PersistentState>

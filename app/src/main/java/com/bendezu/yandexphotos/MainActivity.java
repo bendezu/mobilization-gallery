@@ -1,28 +1,14 @@
 package com.bendezu.yandexphotos;
 
-import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.SharedPreferencesCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bendezu.yandexphotos.fragment.AuthFragment;
@@ -31,27 +17,22 @@ import com.bendezu.yandexphotos.fragment.ImageDetailFragment;
 import com.bendezu.yandexphotos.util.AuthUtils;
 import com.bendezu.yandexphotos.util.UriUtils;
 import com.yandex.disk.rest.Credentials;
-import com.yandex.disk.rest.DownloadListener;
 import com.yandex.disk.rest.ResourcesArgs;
 import com.yandex.disk.rest.RestClient;
 import com.yandex.disk.rest.exceptions.ServerException;
-import com.yandex.disk.rest.exceptions.ServerIOException;
-import com.yandex.disk.rest.json.DiskInfo;
+import com.yandex.disk.rest.exceptions.http.HttpCodeException;
+import com.yandex.disk.rest.exceptions.http.UnauthorizedException;
 import com.yandex.disk.rest.json.Resource;
 import com.yandex.disk.rest.json.ResourceList;
-import com.yandex.disk.rest.util.ResourcePath;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         ImageRecyclerViewAdapter.OnImageClickListener {
 
     private static final String LOG_TAG = "MainActivity";
-    private static final int REQUEST_CODE_ACCOUNT_MANAGER = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +41,18 @@ public class MainActivity extends AppCompatActivity implements
 
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         String accessToken = preferences.getString(getString(R.string.saved_access_token_key), null);
-        if (accessToken == null) {
-            if  (savedInstanceState == null) {
+
+        if (savedInstanceState == null) {
+            if (accessToken == null){
                 //Authorization
                 AuthFragment authFragment = new AuthFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.fragment_container, authFragment)
                         .commit();
+            } else {
+                OnAuthorizationSuccess(accessToken);
             }
-        } else {
-            OnAuthorizationSuccess(accessToken);
         }
 
     }
@@ -84,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements
             String error = UriUtils.getFragmentParameter(uri, "error");
             if (error != null) {
                 Log.d(LOG_TAG, "Permission error: " + error);
-                Toast.makeText(this, "DAY DOSTUP PIDOR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.access_denied, Toast.LENGTH_SHORT).show();
 
             }
             String accessToken = UriUtils.getFragmentParameter(uri, "access_token");
@@ -140,10 +122,25 @@ public class MainActivity extends AppCompatActivity implements
                 List<Resource> items = resources.getItems();
                 for (Resource item : items) {
                     paths.add(item.getPath().getPath());
+
                     previews.add(item.getPreview());
                 }
 
-            } catch (IOException | ServerException e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(R.id.activity_container),
+                        "NO INTERNET CONNECTION", Snackbar.LENGTH_LONG).show();
+            } catch (UnauthorizedException e) {
+                //token expired
+                e.printStackTrace();
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(AuthUtils.getAuthUrl()));
+                startActivity(intent);
+            }
+            catch (HttpCodeException e) {
+                e.printStackTrace();
+            }
+            catch (ServerException e) {
                 e.printStackTrace();
             }
             Bundle bundle = new Bundle();
@@ -160,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements
 
             getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.nothing, R.anim.slide_out_up)
                     .replace(R.id.fragment_container, mGalleryFragment)
                     .commit();
         }

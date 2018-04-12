@@ -2,4 +2,10 @@
     <string name="app_name">Photos</string>
 
     <string name="saved_access_token_key">access_token</string>
+
+    <string name="log_in">LOG IN</string>
+    <string name="yandex">Yandex</string>
+    <string name="mobilization">MOBILIZATION</string>
+
+    <string name="access_denied">DAY DOSTUP PIDOR </string>
 </resources>
