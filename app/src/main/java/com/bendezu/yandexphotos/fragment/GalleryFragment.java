@@ -2,6 +2,7 @@ package com.bendezu.yandexphotos.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,35 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bendezu.yandexphotos.data.ImageContent;
-import com.bendezu.yandexphotos.ImageRecyclerViewAdapter;
+import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.R;
-
-import java.util.List;
 
 
 public class GalleryFragment extends Fragment {
 
     private final String LOG_TAG = "GalleryFragment";
     private int mColumnCount;
-    private ImageRecyclerViewAdapter.OnImageClickListener mActivity;
     private RecyclerView mRecyclerView;
 
     public GalleryFragment() { }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(LOG_TAG, "OnAttach");
-        // This makes sure that the host activity has implemented the callback interface
-        // If not, it throws an exception
-        try {
-            mActivity = (ImageRecyclerViewAdapter.OnImageClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnImageClickListener");
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,17 +36,40 @@ public class GalleryFragment extends Fragment {
         mColumnCount = getResources().getInteger(R.integer.galleryColumns);
         Log.d(LOG_TAG, "set column count to " + mColumnCount);
 
-        mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(this, getArguments(), mActivity));
+        mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(this, getArguments()));
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+
+        //prepareTransitions();
+        //postponeEnterTransition();
 
         return view;
     }
 
     @Override
-    public void onDetach() {
-        Log.d(LOG_TAG, "OnDetach");
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState == null)
+            scrollToPosition();
+    }
 
-        mActivity = null;
-        super.onDetach();
+    private void scrollToPosition(){
+        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3,
+                                       int i4, int i5, int i6, int i7) {
+                mRecyclerView.removeOnLayoutChangeListener(this);
+                final RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+                View viewAtPosition = layoutManager.findViewByPosition(MainActivity.currentPosition);
+                if (viewAtPosition == null || layoutManager.
+                        isViewPartiallyVisible(viewAtPosition, false, true)) {
+                    mRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutManager.scrollToPosition(MainActivity.currentPosition);
+                        }
+                    });
+                }
+            }
+        });
     }
 }

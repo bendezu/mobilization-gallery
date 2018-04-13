@@ -6,11 +6,9 @@
     tools:context=".fragment.ImageDetailFragment"
     android:clickable="true">
 
-    <ImageView
-        android:id="@+id/iv_image"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/image_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorImageDetailBackground"
-        android:src="@mipmap/image_detail_placeholder" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

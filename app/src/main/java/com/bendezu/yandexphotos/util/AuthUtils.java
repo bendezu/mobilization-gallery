@@ -19,6 +19,7 @@ public class AuthUtils {
                 AMPERSAND + "client_id=" + CLIENT_ID +
                 AMPERSAND + "redirect_uri=" + REDIRECT_URI;
     }
+
     //Forces authorization even if user has already authorized
     public static String getForceAuthUrl(){
         return getAuthUrl() + AMPERSAND + "force_confirm=" + FORCE_CONFIRM;

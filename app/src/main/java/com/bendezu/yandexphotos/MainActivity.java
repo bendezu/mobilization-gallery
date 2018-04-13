@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.fragment.AuthFragment;
 import com.bendezu.yandexphotos.fragment.GalleryFragment;
 import com.bendezu.yandexphotos.fragment.ImageDetailFragment;
@@ -29,10 +30,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements
-        ImageRecyclerViewAdapter.OnImageClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
+    private static final String KEY_CURRENT_IMAGE_POSITION = "currentImagePosition";
+
+    public static int currentPosition;
+    public static String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements
 
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         String accessToken = preferences.getString(getString(R.string.saved_access_token_key), null);
+
+        token = accessToken;
 
         if (savedInstanceState == null) {
             if (accessToken == null){
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements
             } else {
                 OnAuthorizationSuccess(accessToken);
             }
+        } else {
+            currentPosition = savedInstanceState.getInt(KEY_CURRENT_IMAGE_POSITION, 0);
         }
 
     }
@@ -83,19 +91,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
         super.onNewIntent(intent);
-    }
-
-    @Override
-    public void onImageSelected(int position) {
-        Toast.makeText(this, "Click to Image: " + position, Toast.LENGTH_SHORT).show();
-
-        ImageDetailFragment detailImageFragment = new ImageDetailFragment();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, detailImageFragment)
-                .addToBackStack(ImageDetailFragment.class.getSimpleName())
-                .commit();
     }
 
     public void OnAuthorizationSuccess(final String token) {
@@ -161,5 +156,12 @@ public class MainActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_container, mGalleryFragment)
                     .commit();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_IMAGE_POSITION, currentPosition);
+
     }
 }

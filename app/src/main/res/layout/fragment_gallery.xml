@@ -36,8 +36,8 @@
         android:id="@+id/gallery_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/fragment_image"
+        tools:listitem="@layout/gallery_item"
         tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-        tools:spanCount="2"/>
+        tools:spanCount="3"/>
 
 </LinearLayout>

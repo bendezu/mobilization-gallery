@@ -6,7 +6,7 @@
 
     <color name="colorWindowBackground">#EEEEEE</color>
 
-    <color name="colorImagePlaceHolder">#BDBDBD</color>
+    <color name="colorImagePlaceHolder">#e0e0e0</color>
 
     <color name="colorTextDark">#000000</color>
     <color name="colorTextLight">#ffffff</color>
