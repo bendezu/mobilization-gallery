@@ -8,4 +8,5 @@
     <string name="mobilization">MOBILIZATION</string>
 
     <string name="access_denied">DAY DOSTUP PIDOR </string>
+    <string name="no_network_message">NO INTERNET CONNECTION</string>
 </resources>

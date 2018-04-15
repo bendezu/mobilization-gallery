@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos;
+package com.bendezu.yandexphotos.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

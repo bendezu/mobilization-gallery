@@ -50,19 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             if (accessToken == null){
-                //Authorization
-                AuthFragment authFragment = new AuthFragment();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.fragment_container, authFragment)
-                        .commit();
+                launchLoginScreen();
             } else {
                 OnAuthorizationSuccess(accessToken);
             }
         } else {
             currentPosition = savedInstanceState.getInt(KEY_CURRENT_IMAGE_POSITION, 0);
         }
-
     }
 
     @Override
@@ -110,27 +104,25 @@ public class MainActivity extends AppCompatActivity {
                 ResourcesArgs args = new ResourcesArgs.Builder()
                         .setMediaType("image")
                         .setLimit(Integer.MAX_VALUE)
-                        //.setPreviewSize("S")
-                        .setPreviewCrop(true)
+                        .setPreviewSize("M")
+                        //.setPreviewCrop(true)
                         .build();
                 ResourceList resources = client.getLastUploadedResources(args);
                 List<Resource> items = resources.getItems();
                 for (Resource item : items) {
                     paths.add(item.getPath().getPath());
-
                     previews.add(item.getPreview());
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
                 Snackbar.make(findViewById(R.id.activity_container),
-                        "NO INTERNET CONNECTION", Snackbar.LENGTH_LONG).show();
+                        R.string.no_network_message, Snackbar.LENGTH_LONG).show();
             } catch (UnauthorizedException e) {
                 //token expired
                 e.printStackTrace();
-                Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(AuthUtils.getAuthUrl()));
-                startActivity(intent);
+                launchLoginScreen();
+                cancel(true);
             }
             catch (HttpCodeException e) {
                 e.printStackTrace();
@@ -156,6 +148,15 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container, mGalleryFragment)
                     .commit();
         }
+    }
+
+    private void launchLoginScreen(){
+        AuthFragment authFragment = new AuthFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_down, R.anim.nothing)
+                .replace(R.id.fragment_container, authFragment)
+                .commit();
     }
 
     @Override

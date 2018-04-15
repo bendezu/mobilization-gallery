@@ -48,13 +48,17 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
 
         //image.setTransitionName(imageUrl);
 
-        GlideUrl request = new GlideUrl(imageUrl, new LazyHeaders.Builder()
-                .addHeader("Authorization", "OAuth " + token)
-                .build());
-        Glide.with(this)
-                .load(request)
-                .listener(this)
-                .into(image);
+        if (imageUrl != null) {
+            GlideUrl request = new GlideUrl(imageUrl, new LazyHeaders.Builder()
+                    .addHeader("Authorization", "OAuth " + token)
+                    .build());
+            Glide.with(this)
+                    .load(request)
+                    .listener(this)
+                    .into(image);
+        } else {
+            image.setImageResource(R.color.colorImagePlaceHolder);
+        }
 
         return view;
     }
@@ -62,7 +66,6 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
     @Override
     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                 Target<Drawable> target, boolean isFirstResource) {
-
         //getParentFragment().startPostponedEnterTransition();
         return false;
     }
@@ -70,7 +73,6 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
     @Override
     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
                                    DataSource dataSource, boolean isFirstResource) {
-
         //getParentFragment().startPostponedEnterTransition();
         return false;
     }

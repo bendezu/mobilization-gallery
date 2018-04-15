@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bendezu.yandexphotos.R;
-import com.bendezu.yandexphotos.SquareImageView;
+import com.bendezu.yandexphotos.view.SquareImageView;
 import com.bendezu.yandexphotos.ViewHolderListenerImpl;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -99,6 +98,10 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
         void downloadImage(int position){
             String preview = mPreviews.get(position);
+            if (preview == null){
+                image.setImageResource(R.drawable.ic_failed);
+                return;
+            }
             GlideUrl request = new GlideUrl(preview, new LazyHeaders.Builder()
                     .addHeader("Authorization", "OAuth " + mToken)
                     .build());

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class GalleryFragment extends Fragment {
     private final String LOG_TAG = "GalleryFragment";
     private int mColumnCount;
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeRefresh;
 
     public GalleryFragment() { }
 
@@ -32,12 +34,13 @@ public class GalleryFragment extends Fragment {
         Context context = view.getContext();
 
         mRecyclerView = view.findViewById(R.id.gallery_recycler_view);
+        mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
 
         mColumnCount = getResources().getInteger(R.integer.galleryColumns);
-        Log.d(LOG_TAG, "set column count to " + mColumnCount);
-
         mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(this, getArguments()));
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+
+        //mSwipeRefresh.setOnRefreshListener(this);
 
         //prepareTransitions();
         //postponeEnterTransition();
