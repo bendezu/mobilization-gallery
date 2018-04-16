@@ -11,24 +11,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.fragment.AuthFragment;
 import com.bendezu.yandexphotos.fragment.GalleryFragment;
-import com.bendezu.yandexphotos.fragment.ImageDetailFragment;
+import com.bendezu.yandexphotos.rest.Resource;
+import com.bendezu.yandexphotos.rest.ResourceList;
+import com.bendezu.yandexphotos.rest.ResourcesArgs;
+import com.bendezu.yandexphotos.rest.RestClient;
 import com.bendezu.yandexphotos.util.AuthUtils;
 import com.bendezu.yandexphotos.util.UriUtils;
-import com.yandex.disk.rest.Credentials;
-import com.yandex.disk.rest.ResourcesArgs;
-import com.yandex.disk.rest.RestClient;
-import com.yandex.disk.rest.exceptions.ServerException;
-import com.yandex.disk.rest.exceptions.http.HttpCodeException;
-import com.yandex.disk.rest.exceptions.http.UnauthorizedException;
-import com.yandex.disk.rest.json.Resource;
-import com.yandex.disk.rest.json.ResourceList;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             if (accessToken == null){
                 launchLoginScreen();
             } else {
-                OnAuthorizationSuccess(accessToken);
+                loadImageDataAndLaunchGalleryFragment(accessToken);
             }
         } else {
             currentPosition = savedInstanceState.getInt(KEY_CURRENT_IMAGE_POSITION, 0);
@@ -81,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
                         .putString(getString(R.string.saved_access_token_key), accessToken)
                         .apply();
 
-                OnAuthorizationSuccess(accessToken);
+                loadImageDataAndLaunchGalleryFragment(accessToken);
             }
         }
         super.onNewIntent(intent);
     }
 
-    public void OnAuthorizationSuccess(final String token) {
+    public void loadImageDataAndLaunchGalleryFragment(final String token) {
         new AsyncTaskRunner().execute(token);
     }
 
@@ -98,6 +95,27 @@ public class MainActivity extends AppCompatActivity {
             String token = strings[0];
             ArrayList<String> paths = new ArrayList<>();
             ArrayList<String> previews = new ArrayList<>();
+
+            RestClient client = new RestClient(token);
+            ResourcesArgs args = new ResourcesArgs.Builder()
+                    .setMediaType("image")
+                    .setLimit(Integer.MAX_VALUE)
+                    .setPreviewSize("M")
+                    .build();
+            Call<ResourceList> call = client.getLastUploadedResources(args);
+            try {
+                Response<ResourceList> response = call.execute();
+                int code = response.code();
+                List<Resource> items = response.body().getItems();
+                for (Resource item : items) {
+                    paths.add(item.getPath());
+                    previews.add(item.getPreview());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            /*
             Credentials credentials = new Credentials("user", token);
             RestClient client = new RestClient(credentials);
             try {
@@ -105,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                         .setMediaType("image")
                         .setLimit(Integer.MAX_VALUE)
                         .setPreviewSize("M")
-                        //.setPreviewCrop(true)
                         .build();
                 ResourceList resources = client.getLastUploadedResources(args);
                 List<Resource> items = resources.getItems();
@@ -130,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             catch (ServerException e) {
                 e.printStackTrace();
             }
+            */
             Bundle bundle = new Bundle();
             bundle.putString("token", token);
             bundle.putStringArrayList("paths", paths);
@@ -163,6 +181,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_CURRENT_IMAGE_POSITION, currentPosition);
-
     }
 }
