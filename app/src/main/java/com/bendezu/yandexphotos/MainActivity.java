@@ -115,39 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            /*
-            Credentials credentials = new Credentials("user", token);
-            RestClient client = new RestClient(credentials);
-            try {
-                ResourcesArgs args = new ResourcesArgs.Builder()
-                        .setMediaType("image")
-                        .setLimit(Integer.MAX_VALUE)
-                        .setPreviewSize("M")
-                        .build();
-                ResourceList resources = client.getLastUploadedResources(args);
-                List<Resource> items = resources.getItems();
-                for (Resource item : items) {
-                    paths.add(item.getPath().getPath());
-                    previews.add(item.getPreview());
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Snackbar.make(findViewById(R.id.activity_container),
-                        R.string.no_network_message, Snackbar.LENGTH_LONG).show();
-            } catch (UnauthorizedException e) {
-                //token expired
-                e.printStackTrace();
-                launchLoginScreen();
-                cancel(true);
-            }
-            catch (HttpCodeException e) {
-                e.printStackTrace();
-            }
-            catch (ServerException e) {
-                e.printStackTrace();
-            }
-            */
             Bundle bundle = new Bundle();
             bundle.putString("token", token);
             bundle.putStringArrayList("paths", paths);

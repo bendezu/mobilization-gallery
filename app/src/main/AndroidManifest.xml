@@ -31,6 +31,12 @@
                     android:scheme="yandexphotos"/>
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".data.GalleryProvider"
+            android:authorities="com.bendezu.yandexphotos"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
