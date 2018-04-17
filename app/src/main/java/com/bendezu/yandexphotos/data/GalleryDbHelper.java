@@ -26,7 +26,7 @@ public class GalleryDbHelper extends SQLiteOpenHelper {
                         GalleryEntry.COLUMN_PATH    + " TEXT NOT NULL," +
                         GalleryEntry.COLUMN_CREATED + " TEXT NOT NULL, " +
                         GalleryEntry.COLUMN_FILE    + " TEXT NOT NULL, " +
-                        GalleryEntry.COLUMN_PREVIEW + " TEXT NOT NULL);";
+                        GalleryEntry.COLUMN_PREVIEW + " TEXT);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_GALLERY_TABLE);
     }

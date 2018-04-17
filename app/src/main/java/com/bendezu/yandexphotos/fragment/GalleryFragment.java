@@ -1,6 +1,7 @@
 package com.bendezu.yandexphotos.fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,18 @@ import android.view.ViewGroup;
 import com.bendezu.yandexphotos.MainActivity;
 import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.rest.Resource;
+import com.bendezu.yandexphotos.rest.ResourceList;
+import com.bendezu.yandexphotos.rest.ResourcesArgs;
+import com.bendezu.yandexphotos.rest.RestClient;
+import com.yandex.disk.rest.exceptions.NetworkIOException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 public class GalleryFragment extends Fragment {
@@ -23,6 +36,7 @@ public class GalleryFragment extends Fragment {
     private int mColumnCount;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefresh;
+    private ImageRecyclerViewAdapter mAdapter;
 
     public GalleryFragment() { }
 
@@ -37,8 +51,14 @@ public class GalleryFragment extends Fragment {
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
 
         mColumnCount = getResources().getInteger(R.integer.galleryColumns);
-        mRecyclerView.setAdapter(new ImageRecyclerViewAdapter(this, getArguments()));
+        mAdapter = new ImageRecyclerViewAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+
+        if (savedInstanceState == null) {
+            mSwipeRefresh.setRefreshing(true);
+            new AsyncTaskRunner().execute();
+        }
 
         //mSwipeRefresh.setOnRefreshListener(this);
 
@@ -53,6 +73,37 @@ public class GalleryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState == null)
             scrollToPosition();
+    }
+
+    private class AsyncTaskRunner extends AsyncTask<Void, Void, List<Resource>> {
+
+        @Override
+        protected List<Resource> doInBackground(Void... strings) {
+            String token = MainActivity.token;
+
+            RestClient client = new RestClient(token);
+            ResourcesArgs args = new ResourcesArgs.Builder()
+                    .setMediaType("image")
+                    .setLimit(Integer.MAX_VALUE)
+                    .setPreviewSize("M")
+                    .build();
+            Call<ResourceList> call = client.getLastUploadedResources(args);
+
+            try {
+                Response<ResourceList> response = call.execute();
+                return response.body().getItems();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Resource> resources) {
+            ImageRecyclerViewAdapter.mResources = resources;
+            mAdapter.notifyDataSetChanged();
+            mSwipeRefresh.setRefreshing(false);
+        }
     }
 
     private void scrollToPosition(){

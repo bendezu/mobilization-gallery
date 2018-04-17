@@ -15,12 +15,13 @@ public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return ImageRecyclerViewAdapter.mPreviews.size();
+        if (ImageRecyclerViewAdapter.mResources == null) return 0;
+        return ImageRecyclerViewAdapter.mResources.size();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ImageFragment.newInstance(ImageRecyclerViewAdapter.mPreviews.get(position),
+        return ImageFragment.newInstance(ImageRecyclerViewAdapter.mResources.get(position).getFile(),
                 MainActivity.token);
     }
 }

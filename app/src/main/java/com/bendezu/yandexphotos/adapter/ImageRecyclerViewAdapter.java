@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bendezu.yandexphotos.MainActivity;
 import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.rest.Resource;
 import com.bendezu.yandexphotos.view.SquareImageView;
 import com.bendezu.yandexphotos.ViewHolderListenerImpl;
 import com.bumptech.glide.Glide;
@@ -24,14 +26,13 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {
 
-    private final ArrayList<String> mPaths;
-    public static ArrayList<String> mPreviews;
     private final RequestManager mRequestManager;
-    private final String mToken;
+    public static List<Resource> mResources;
 
     private ViewHolderListener mViewHolderListener;
 
@@ -40,13 +41,9 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         void onItemClicked(View view, int adapterPosition);
     }
 
-    public ImageRecyclerViewAdapter(Fragment fragment, Bundle bundle) {
+    public ImageRecyclerViewAdapter(Fragment fragment) {
         mRequestManager = Glide.with(fragment);
         mViewHolderListener = new ViewHolderListenerImpl(fragment);
-
-        mPaths = bundle.getStringArrayList("paths");
-        mPreviews = bundle.getStringArrayList("previews");
-        mToken = bundle.getString("token");
     }
 
     @Override
@@ -63,7 +60,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public int getItemCount() {
-        return mPaths.size();
+        if (mResources == null) return 0;
+        return mResources.size();
     }
 
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RequestListener<Drawable> {
@@ -97,13 +95,13 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         }
 
         void downloadImage(int position){
-            String preview = mPreviews.get(position);
+            String preview = mResources.get(position).getPreview();
             if (preview == null){
                 image.setImageResource(R.drawable.ic_failed);
                 return;
             }
             GlideUrl request = new GlideUrl(preview, new LazyHeaders.Builder()
-                    .addHeader("Authorization", "OAuth " + mToken)
+                    .addHeader("Authorization", "OAuth " + MainActivity.token)
                     .build());
             mRequestManager
                     .load(request)

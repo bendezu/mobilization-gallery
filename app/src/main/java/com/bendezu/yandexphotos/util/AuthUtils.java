@@ -13,7 +13,7 @@ public class AuthUtils {
     public static final String REDIRECT_URI = "yandexphotos://token";
     public static final String FORCE_CONFIRM = "true";
 
-    public static String getAuthUrl(){
+    public static String buildAuthUrl(){
         return OAUTH_URL + QUESTION_MARK
                 + "response_type=" + RESPONSE_TYPE +
                 AMPERSAND + "client_id=" + CLIENT_ID +
@@ -21,7 +21,7 @@ public class AuthUtils {
     }
 
     //Forces authorization even if user has already authorized
-    public static String getForceAuthUrl(){
-        return getAuthUrl() + AMPERSAND + "force_confirm=" + FORCE_CONFIRM;
+    public static String buildForceAuthUrl(){
+        return buildAuthUrl() + AMPERSAND + "force_confirm=" + FORCE_CONFIRM;
     }
 }
