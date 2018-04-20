@@ -1,5 +1,6 @@
 package com.bendezu.yandexphotos.adapter;
 
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 
 import com.bendezu.yandexphotos.MainActivity;
 import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.data.GalleryContract;
 import com.bendezu.yandexphotos.rest.Resource;
 import com.bendezu.yandexphotos.view.SquareImageView;
 import com.bendezu.yandexphotos.ViewHolderListenerImpl;
@@ -32,7 +34,7 @@ import java.util.List;
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {
 
     private final RequestManager mRequestManager;
-    public static List<Resource> mResources;
+    public static Cursor mCursor;
 
     private ViewHolderListener mViewHolderListener;
 
@@ -60,8 +62,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public int getItemCount() {
-        if (mResources == null) return 0;
-        return mResources.size();
+        if (mCursor == null) return 0;
+        return mCursor.getCount();
     }
 
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RequestListener<Drawable> {
@@ -95,7 +97,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         }
 
         void downloadImage(int position){
-            String preview = mResources.get(position).getPreview();
+            mCursor.moveToPosition(position);
+            String preview = mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_PREVIEW);
             if (preview == null){
                 image.setImageResource(R.drawable.ic_failed);
                 return;

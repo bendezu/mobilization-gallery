@@ -58,17 +58,26 @@ public class MainActivity extends AppCompatActivity {
             String accessToken = UriUtils.getFragmentParameter(uri, "access_token");
             if (accessToken != null) {
                 Log.d(LOG_TAG, "Access token: " + accessToken);
-                //Handle token
-                // save to SharedPreferences
+                // save token to SharedPreferences
                 getPreferences(Context.MODE_PRIVATE)
                         .edit()
                         .putString(getString(R.string.saved_access_token_key), accessToken)
                         .apply();
                 token = accessToken;
-                launchGalleryFragment();
+                //launchGalleryFragment();
+                shouldLaunchgallery = true;
             }
         }
         super.onNewIntent(intent);
+    }
+
+    private boolean shouldLaunchgallery = false;
+
+    @Override
+    protected void onPostResume() {
+        if (shouldLaunchgallery) launchGalleryFragment();
+        shouldLaunchgallery = false;
+        super.onPostResume();
     }
 
     public void launchGalleryFragment() {
@@ -80,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void launchLoginScreen(){
+    public void launchLoginScreen(){
         AuthFragment authFragment = new AuthFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_down, R.anim.nothing)
                 .replace(R.id.fragment_container, authFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     @Override

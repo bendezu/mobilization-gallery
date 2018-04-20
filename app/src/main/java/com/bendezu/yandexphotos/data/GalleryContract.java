@@ -35,5 +35,20 @@ public class GalleryContract {
         // URL for preview of image
         public static final String COLUMN_PREVIEW = "preview";
 
+        public static String[] getAllColumns() {
+            return new String[]{
+                    COLUMN_NAME,
+                    COLUMN_PATH,
+                    COLUMN_CREATED,
+                    COLUMN_FILE,
+                    COLUMN_PREVIEW
+            };
+        }
+
+        public static final int INDEX_COLUMN_NAME = 0;
+        public static final int INDEX_COLUMN_PATH = 1;
+        public static final int INDEX_COLUMN_CREATED = 2;
+        public static final int INDEX_COLUMN_FILE = 3;
+        public static final int INDEX_COLUMN_PREVIEW = 4;
     }
 }

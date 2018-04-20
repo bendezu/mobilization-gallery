@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.data.GalleryContract;
 import com.bendezu.yandexphotos.fragment.ImageFragment;
 
 public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -15,13 +16,15 @@ public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        if (ImageRecyclerViewAdapter.mResources == null) return 0;
-        return ImageRecyclerViewAdapter.mResources.size();
+        if (ImageRecyclerViewAdapter.mCursor == null) return 0;
+        return ImageRecyclerViewAdapter.mCursor.getCount();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ImageFragment.newInstance(ImageRecyclerViewAdapter.mResources.get(position).getFile(),
+        ImageRecyclerViewAdapter.mCursor.moveToPosition(position);
+        return ImageFragment.newInstance(
+                ImageRecyclerViewAdapter.mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_FILE),
                 MainActivity.token);
     }
 }
