@@ -2,7 +2,6 @@ package com.bendezu.yandexphotos.adapter;
 
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.gallery.MainActivity;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.data.GalleryContract;
-import com.bendezu.yandexphotos.rest.Resource;
 import com.bendezu.yandexphotos.view.SquareImageView;
 import com.bendezu.yandexphotos.ViewHolderListenerImpl;
 import com.bumptech.glide.Glide;
@@ -26,9 +24,6 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {

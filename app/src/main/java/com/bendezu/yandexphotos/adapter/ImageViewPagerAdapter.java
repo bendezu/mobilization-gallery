@@ -1,12 +1,11 @@
 package com.bendezu.yandexphotos.adapter;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.gallery.MainActivity;
 import com.bendezu.yandexphotos.data.GalleryContract;
-import com.bendezu.yandexphotos.fragment.ImageFragment;
+import com.bendezu.yandexphotos.gallery.ImageFragment;
 
 public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
 

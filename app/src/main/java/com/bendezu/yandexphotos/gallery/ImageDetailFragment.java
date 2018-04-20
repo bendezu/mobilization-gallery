@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.fragment;
+package com.bendezu.yandexphotos.gallery;
 
 
 import android.os.Bundle;
@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.gallery.MainActivity;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
 

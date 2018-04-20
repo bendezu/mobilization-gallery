@@ -1,12 +1,12 @@
-package com.bendezu.yandexphotos.fragment;
+package com.bendezu.yandexphotos.gallery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -18,11 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.authorization.AuthActivity;
 import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.data.GalleryAsyncLoader;
 import com.bendezu.yandexphotos.data.GalleryContract;
+import com.bendezu.yandexphotos.util.PreferencesUtils;
 
 import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.*;
 
@@ -84,17 +85,15 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         public void onLoadFinished(Loader<String> loader, String data) {
             switch (data) {
                 case SUCCESS:
-                    //nothing to do
+                    Toast.makeText(getContext(), data, Toast.LENGTH_SHORT).show();
                     break;
                 case UNAUTHORIZED:
+                    //reset token
+                    PreferencesUtils.setAccessToken(null, getContext());
                     //launch Auth screen
-                    AuthFragment authFragment = new AuthFragment();
-                    FragmentTransaction transaction = getFragmentManager()
-                            .beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_down, R.anim.nothing)
-                            .replace(R.id.fragment_container, authFragment);
-                    if (!isStateSaved())
-                        transaction.commitAllowingStateLoss();
+                    Intent intent = new Intent(getContext(), AuthActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
                     break;
                 case NO_INTERNET_CONNECTION:
                     //show message

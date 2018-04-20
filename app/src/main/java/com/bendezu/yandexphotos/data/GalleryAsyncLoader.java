@@ -5,11 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.bendezu.yandexphotos.MainActivity;
+import com.bendezu.yandexphotos.gallery.MainActivity;
 import com.bendezu.yandexphotos.rest.Resource;
 import com.bendezu.yandexphotos.rest.ResourceList;
 import com.bendezu.yandexphotos.rest.ResourcesArgs;
 import com.bendezu.yandexphotos.rest.RestClient;
+import com.bendezu.yandexphotos.util.PreferencesUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +47,7 @@ public class GalleryAsyncLoader extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
 
-        String token = MainActivity.token;
+        String token = PreferencesUtils.getAccessToken(getContext());
         String status;
         RestClient client = new RestClient(token);
         ResourcesArgs args = new ResourcesArgs.Builder()

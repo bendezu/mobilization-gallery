@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.fragment;
+package com.bendezu.yandexphotos.gallery;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 

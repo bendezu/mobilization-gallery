@@ -4,7 +4,7 @@
     package="com.bendezu.yandexphotos">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+
+        <activity
+            android:name=".authorization.AuthActivity"
             android:theme="@style/AppTheme"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -28,14 +30,20 @@
 
                 <data
                     android:host="token"
-                    android:scheme="yandexphotos"/>
+                    android:scheme="yandexphotos" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".gallery.MainActivity"
+            android:theme="@style/AppTheme">
+
         </activity>
 
         <provider
             android:name=".data.GalleryProvider"
             android:authorities="com.bendezu.yandexphotos"
-            android:exported="false"/>
+            android:exported="false" />
 
     </application>
 
