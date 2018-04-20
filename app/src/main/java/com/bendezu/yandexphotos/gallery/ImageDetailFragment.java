@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.bendezu.yandexphotos.gallery.MainActivity;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
 
@@ -36,11 +35,11 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         mShareButton.setOnClickListener(this);
 
         mViewPager.setAdapter(new ImageViewPagerAdapter(this));
-        mViewPager.setCurrentItem(MainActivity.currentPosition);
+        mViewPager.setCurrentItem(GalleryActivity.currentPosition);
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
-                MainActivity.currentPosition = position;
+                GalleryActivity.currentPosition = position;
             }
         });
         return view;

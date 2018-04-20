@@ -30,8 +30,6 @@ import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.*;
 
 public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private final String LOG_TAG = "GalleryFragment";
-    private int mColumnCount;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefresh;
     private ImageRecyclerViewAdapter mAdapter;
@@ -44,15 +42,13 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        Context context = view.getContext();
-
         mRecyclerView = view.findViewById(R.id.gallery_recycler_view);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
 
-        mColumnCount = getResources().getInteger(R.integer.galleryColumns);
+        int mColumnCount = getResources().getInteger(R.integer.galleryColumns);
         mAdapter = new ImageRecyclerViewAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), mColumnCount));
         mRecyclerView.setHasFixedSize(true);
 
         mSwipeRefresh.setOnRefreshListener(this);
@@ -155,13 +151,13 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                                        int i4, int i5, int i6, int i7) {
                 mRecyclerView.removeOnLayoutChangeListener(this);
                 final RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
-                View viewAtPosition = layoutManager.findViewByPosition(MainActivity.currentPosition);
+                View viewAtPosition = layoutManager.findViewByPosition(GalleryActivity.currentPosition);
                 if (viewAtPosition == null || layoutManager.
                         isViewPartiallyVisible(viewAtPosition, false, true)) {
                     mRecyclerView.post(new Runnable() {
                         @Override
                         public void run() {
-                            layoutManager.scrollToPosition(MainActivity.currentPosition);
+                            layoutManager.scrollToPosition(GalleryActivity.currentPosition);
                         }
                     });
                 }

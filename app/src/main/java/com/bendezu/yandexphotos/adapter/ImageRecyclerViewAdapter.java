@@ -1,6 +1,9 @@
 package com.bendezu.yandexphotos.adapter;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bendezu.yandexphotos.gallery.MainActivity;
+import com.bendezu.yandexphotos.App;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.data.GalleryContract;
+import com.bendezu.yandexphotos.util.NetworkUtils;
+import com.bendezu.yandexphotos.util.PreferencesUtils;
 import com.bendezu.yandexphotos.view.SquareImageView;
-import com.bendezu.yandexphotos.ViewHolderListenerImpl;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
@@ -98,14 +102,9 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                 image.setImageResource(R.drawable.ic_failed);
                 return;
             }
-            GlideUrl request = new GlideUrl(preview, new LazyHeaders.Builder()
-                    .addHeader("Authorization", "OAuth " + MainActivity.token)
-                    .build());
-            mRequestManager
-                    .load(request)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .listener(this)
-                    .into(image);
+            String token = PreferencesUtils.getAccessToken(App.getContext());
+
+            NetworkUtils.loadImage(mRequestManager, preview, image, this);
         }
 
         @Override

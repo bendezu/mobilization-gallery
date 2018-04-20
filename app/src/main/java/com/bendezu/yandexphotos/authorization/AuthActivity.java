@@ -1,6 +1,5 @@
 package com.bendezu.yandexphotos.authorization;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bendezu.yandexphotos.R;
-import com.bendezu.yandexphotos.gallery.MainActivity;
+import com.bendezu.yandexphotos.gallery.GalleryActivity;
 
 public class AuthActivity extends AppCompatActivity implements AuthContract.View {
 
@@ -48,7 +47,7 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
 
     @Override
     public void launchGallery() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, GalleryActivity.class);
         startActivity(intent);
         finish();
     }

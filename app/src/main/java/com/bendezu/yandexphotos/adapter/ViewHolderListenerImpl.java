@@ -1,12 +1,13 @@
-package com.bendezu.yandexphotos;
+package com.bendezu.yandexphotos.adapter;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
+import com.bendezu.yandexphotos.gallery.GalleryActivity;
 import com.bendezu.yandexphotos.gallery.ImageDetailFragment;
-import com.bendezu.yandexphotos.gallery.MainActivity;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -23,7 +24,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
     @Override
     public void onLoadCompleted(ImageView view, int position) {
         // Call startPostponedEnterTransition only when the 'selected' image loading is completed.
-        if (MainActivity.currentPosition != position) {
+        if (GalleryActivity.currentPosition != position) {
             return;
         }
         if (enterTransitionStarted.getAndSet(true)) {
@@ -43,7 +44,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
     @Override
     public void onItemClicked(View view, int position) {
 
-        MainActivity.currentPosition = position;
+        GalleryActivity.currentPosition = position;
 
         // Exclude the clicked card from the exit transition (e.g. the card will disappear immediately
         // instead of fading out with the rest to prevent an overlapping animation of fade and move).
@@ -54,7 +55,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
                 .beginTransaction()
                 //.setReorderingAllowed(true) // Optimize for shared element transition
                 //.addSharedElement(transitioningView, transitioningView.getTransitionName())
-                .add(R.id.fragment_container, new ImageDetailFragment(),
+                .replace(R.id.fragment_container, new ImageDetailFragment(),
                         ImageDetailFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();

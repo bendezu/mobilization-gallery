@@ -2,11 +2,9 @@ package com.bendezu.yandexphotos.authorization;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 
-import com.bendezu.yandexphotos.R;
-import com.bendezu.yandexphotos.util.AuthUtils;
+import com.bendezu.yandexphotos.util.NetworkUtils;
 import com.bendezu.yandexphotos.util.PreferencesUtils;
 import com.bendezu.yandexphotos.util.UriUtils;
 
@@ -21,7 +19,7 @@ public class AuthPresenter implements AuthContract.Presenter {
     @Override
     public void startAuthProcess(Context context) {
         Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(AuthUtils.buildAuthUrl()));
+                Uri.parse(NetworkUtils.buildAuthUrl()));
         context.startActivity(intent);
     }
 
@@ -29,7 +27,7 @@ public class AuthPresenter implements AuthContract.Presenter {
     public void verifyAccess(Intent intent, Context context) {
         Uri uri = intent.getData();
         if (uri != null &&
-                uri.toString().startsWith(AuthUtils.REDIRECT_URI)){
+                uri.toString().startsWith(NetworkUtils.REDIRECT_URI)){
 
             String error = UriUtils.getFragmentParameter(uri, "error");
             if (error != null) {
