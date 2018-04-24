@@ -18,12 +18,14 @@ import com.bumptech.glide.request.target.Target;
 
 public class ImageFragment extends Fragment implements RequestListener<Drawable> {
 
+    private static final String KEY_POSITION = "position";
     private static final String KEY_THUMBNAIL_URL = "thumbnailUrl";
     private static final String KEY_IMAGE_URL = "imageUrl";
 
-    public static ImageFragment newInstance(String thumbnailUrl, String url) {
+    public static ImageFragment newInstance(int position, String thumbnailUrl, String url) {
         ImageFragment fragment = new ImageFragment();
         Bundle argument = new Bundle();
+        argument.putInt(KEY_POSITION, position);
         argument.putString(KEY_THUMBNAIL_URL, thumbnailUrl);
         argument.putString(KEY_IMAGE_URL, url);
         fragment.setArguments(argument);
@@ -40,12 +42,14 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
         ImageView image = view.findViewById(R.id.iv_image);
 
         Bundle arguments = getArguments();
+        int position = arguments.getInt(KEY_POSITION);
         String thumbnailUrl = arguments.getString(KEY_THUMBNAIL_URL);
         String imageUrl = arguments.getString(KEY_IMAGE_URL);
 
-        //image.setTransitionName(imageUrl);
+        image.setTransitionName(String.valueOf(position));
 
-        NetworkUtils.loadImageDetail(this, imageUrl, thumbnailUrl, image, this);
+        NetworkUtils.loadImageDetail(this, imageUrl, thumbnailUrl, image,
+                this, this);
 
         return view;
     }
@@ -53,14 +57,15 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
     @Override
     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                 Target<Drawable> target, boolean isFirstResource) {
-        //getParentFragment().startPostponedEnterTransition();
+        getParentFragment().startPostponedEnterTransition();
         return false;
     }
 
     @Override
     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
                                    DataSource dataSource, boolean isFirstResource) {
-        //getParentFragment().startPostponedEnterTransition();
+        getParentFragment().startPostponedEnterTransition();
         return false;
     }
+
 }

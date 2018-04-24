@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".gallery.ImageDetailFragment"
     android:clickable="true"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorImageDetailBackground">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/image_view_pager"

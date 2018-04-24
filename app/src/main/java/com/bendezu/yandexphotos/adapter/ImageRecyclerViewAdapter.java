@@ -1,9 +1,6 @@
 package com.bendezu.yandexphotos.adapter;
 
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,14 +15,10 @@ import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.data.GalleryContract;
 import com.bendezu.yandexphotos.util.NetworkUtils;
 import com.bendezu.yandexphotos.util.PreferencesUtils;
-import com.bendezu.yandexphotos.view.SquareImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -68,7 +61,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RequestListener<Drawable> {
 
         public final View view;
-        SquareImageView image;
+        ImageView image;
         RequestManager requestManager;
         ViewHolderListener listener;
         int position;
@@ -87,7 +80,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         void onBind(){
             position = getAdapterPosition();
             downloadImage(position);
-            //image.setTransitionName(mPreviews.get(position));
+            image.setTransitionName(String.valueOf(position));
         }
 
         @Override
@@ -98,11 +91,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         void downloadImage(int position){
             mCursor.moveToPosition(position);
             String preview = mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_PREVIEW);
-            if (preview == null){
-                image.setImageResource(R.drawable.ic_failed);
-                return;
-            }
-            String token = PreferencesUtils.getAccessToken(App.getContext());
 
             NetworkUtils.loadImage(mRequestManager, preview, image, this);
         }

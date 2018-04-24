@@ -6,12 +6,12 @@
 
     <color name="colorWindowBackground">#EEEEEE</color>
 
-    <color name="colorImagePlaceHolder">#e0e0e0</color>
+    <color name="colorImagePlaceHolder">#EEEEEE</color>
 
     <color name="colorTextDark">#000000</color>
     <color name="colorTextLight">#ffffff</color>
 
-    <color name="colorImageDetailBackground">#000000</color>
+    <color name="colorImageDetailBackground">#EEEEEE</color>
 
     <color name="colorLogInButton">#000000</color>
 </resources>

@@ -1,15 +1,19 @@
 package com.bendezu.yandexphotos.adapter;
 
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bendezu.yandexphotos.R;
-import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.gallery.GalleryActivity;
 import com.bendezu.yandexphotos.gallery.ImageDetailFragment;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.bendezu.yandexphotos.App.getContext;
 
 public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHolderListener {
 
@@ -18,7 +22,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
 
     public ViewHolderListenerImpl(Fragment fragment) {
         this.fragment = fragment;
-        this.enterTransitionStarted = new AtomicBoolean();
+        enterTransitionStarted = new AtomicBoolean();
     }
 
     @Override
@@ -30,7 +34,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
         if (enterTransitionStarted.getAndSet(true)) {
             return;
         }
-        //fragment.startPostponedEnterTransition();
+        fragment.startPostponedEnterTransition();
     }
 
     /**
@@ -48,15 +52,15 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
 
         // Exclude the clicked card from the exit transition (e.g. the card will disappear immediately
         // instead of fading out with the rest to prevent an overlapping animation of fade and move).
-        //((TransitionSet) fragment.getExitTransition()).excludeTarget(view, true);
+        ((TransitionSet) fragment.getExitTransition()).excludeTarget(view, true);
 
-        //ImageView transitioningView = view.findViewById(R.id.iv_image);
-        fragment.getFragmentManager()
+        ImageView transitioningView = view.findViewById(R.id.item_image);
+
+        this.fragment.getFragmentManager()
                 .beginTransaction()
-                //.setReorderingAllowed(true) // Optimize for shared element transition
-                //.addSharedElement(transitioningView, transitioningView.getTransitionName())
-                .replace(R.id.fragment_container, new ImageDetailFragment(),
-                        ImageDetailFragment.class.getSimpleName())
+                .setReorderingAllowed(true) // Optimize for shared element transition
+                .addSharedElement(transitioningView, transitioningView.getTransitionName())
+                .replace(R.id.fragment_container, new ImageDetailFragment())
                 .addToBackStack(null)
                 .commit();
     }

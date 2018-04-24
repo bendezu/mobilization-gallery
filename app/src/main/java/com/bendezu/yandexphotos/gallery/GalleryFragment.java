@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.transition.TransitionInflater;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +26,9 @@ import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.data.GalleryAsyncLoader;
 import com.bendezu.yandexphotos.data.GalleryContract;
 import com.bendezu.yandexphotos.util.PreferencesUtils;
+
+import java.util.List;
+import java.util.Map;
 
 import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.*;
 
@@ -53,8 +58,8 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         mSwipeRefresh.setOnRefreshListener(this);
 
-        //prepareTransitions();
-        //postponeEnterTransition();
+        prepareTransitions();
+        postponeEnterTransition();
 
         mLoaderManager = getLoaderManager();
         if (savedInstanceState == null) {
@@ -144,6 +149,11 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
             scrollToPosition();
     }
 
+    @Override
+    public void onRefresh() {
+        mLoaderManager.restartLoader(ID_UPDATE_LOADER, null, updateLoaderCallbacks);
+    }
+
     private void scrollToPosition(){
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -165,8 +175,25 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         });
     }
 
-    @Override
-    public void onRefresh() {
-        mLoaderManager.restartLoader(ID_UPDATE_LOADER, null, updateLoaderCallbacks);
+    private void prepareTransitions() {
+        setExitTransition(TransitionInflater.from(getContext())
+                .inflateTransition(R.transition.gallery_exit_transition));
+
+        // A similar mapping is set at the ImagePagerFragment with a setEnterSharedElementCallback.
+        setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                // Locate the ViewHolder for the clicked position.
+                RecyclerView.ViewHolder selectedViewHolder = mRecyclerView
+                        .findViewHolderForAdapterPosition(GalleryActivity.currentPosition);
+                if (selectedViewHolder == null || selectedViewHolder.itemView == null) {
+                    return;
+                }
+
+                // Map the first shared element name to the child ImageView.
+                sharedElements
+                        .put(names.get(0), selectedViewHolder.itemView.findViewById(R.id.item_image));
+            }
+        });
     }
 }

@@ -24,6 +24,7 @@ public class ImageViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         ImageRecyclerViewAdapter.mCursor.moveToPosition(position);
         return ImageFragment.newInstance(
+                position,
                 ImageRecyclerViewAdapter.mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_PREVIEW),
                 ImageRecyclerViewAdapter.mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_FILE) );
     }
