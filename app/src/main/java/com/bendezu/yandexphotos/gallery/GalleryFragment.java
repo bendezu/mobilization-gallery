@@ -1,12 +1,10 @@
 package com.bendezu.yandexphotos.gallery;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.transition.TransitionInflater;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.SharedElementCallback;
@@ -15,14 +13,15 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bendezu.yandexphotos.authorization.AuthActivity;
-import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
 import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
+import com.bendezu.yandexphotos.authorization.AuthActivity;
 import com.bendezu.yandexphotos.data.GalleryAsyncLoader;
 import com.bendezu.yandexphotos.data.GalleryContract;
 import com.bendezu.yandexphotos.util.PreferencesUtils;
@@ -30,7 +29,10 @@ import com.bendezu.yandexphotos.util.PreferencesUtils;
 import java.util.List;
 import java.util.Map;
 
-import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.*;
+import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.NO_INTERNET_CONNECTION;
+import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.SUCCESS;
+import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.UNAUTHORIZED;
+import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.UNEXPECTED;
 
 
 public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -50,10 +52,10 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mRecyclerView = view.findViewById(R.id.gallery_recycler_view);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
 
-        int mColumnCount = getResources().getInteger(R.integer.galleryColumns);
+        int columnCount = getResources().getInteger(R.integer.galleryColumns);
         mAdapter = new ImageRecyclerViewAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), mColumnCount));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), columnCount));
         mRecyclerView.setHasFixedSize(true);
 
         mSwipeRefresh.setOnRefreshListener(this);
@@ -145,8 +147,7 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState == null)
-            scrollToPosition();
+        scrollToPosition();
     }
 
     @Override

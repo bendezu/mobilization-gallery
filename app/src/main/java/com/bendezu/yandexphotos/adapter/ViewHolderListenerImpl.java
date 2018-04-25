@@ -1,9 +1,7 @@
 package com.bendezu.yandexphotos.adapter;
 
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionSet;
 import android.support.v4.app.Fragment;
+import android.transition.TransitionSet;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,8 +10,6 @@ import com.bendezu.yandexphotos.gallery.GalleryActivity;
 import com.bendezu.yandexphotos.gallery.ImageDetailFragment;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static com.bendezu.yandexphotos.App.getContext;
 
 public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHolderListener {
 

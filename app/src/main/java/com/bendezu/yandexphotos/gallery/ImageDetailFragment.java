@@ -2,23 +2,20 @@ package com.bendezu.yandexphotos.gallery;
 
 
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.bendezu.yandexphotos.App;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
+import com.bendezu.yandexphotos.util.DimUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +50,8 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         mBackButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
 
+        mViewPager.setPageTransformer(true, new ParallaxPageTransformer());
+        mViewPager.setPageMargin(Math.round(DimUtils.dpToPx(getContext(), 16)));
         mViewPagerAdapter = new ImageViewPagerAdapter(this);
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setCurrentItem(GalleryActivity.currentPosition);
