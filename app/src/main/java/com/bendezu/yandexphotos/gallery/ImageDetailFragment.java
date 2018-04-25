@@ -2,6 +2,9 @@ package com.bendezu.yandexphotos.gallery;
 
 
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
+import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.support.v4.app.Fragment;
@@ -11,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.bendezu.yandexphotos.App;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
 
@@ -21,7 +26,15 @@ import java.util.Map;
 
 public class ImageDetailFragment extends Fragment implements View.OnClickListener {
 
+    public interface ImageDetailListener{
+        void onTransitionEnd();
+        void onBackPressed();
+    }
+
+    public static final String TAG = "ImageDetailFragment";
+
     private ViewPager mViewPager;
+    private ImageViewPagerAdapter mViewPagerAdapter;
     private ImageButton mBackButton;
     private ImageButton mShareButton;
 
@@ -40,7 +53,8 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         mBackButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
 
-        mViewPager.setAdapter(new ImageViewPagerAdapter(this));
+        mViewPagerAdapter = new ImageViewPagerAdapter(this);
+        mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setCurrentItem(GalleryActivity.currentPosition);
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
@@ -62,7 +76,7 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_button:
-                getFragmentManager().popBackStack();
+                onBackPressed();
                 break;
             case R.id.share_button:
                 //TODO
@@ -70,13 +84,30 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    public void onBackPressed() {
+        mViewPagerAdapter.getCurrentFragment().onBackPressed();
+    }
+
     private void prepareSharedElementTransition() {
-        Transition transition =
+
+        Transition enterTransition =
                 TransitionInflater.from(getContext())
                         .inflateTransition(R.transition.image_shared_element_transition);
-        setSharedElementEnterTransition(transition);
+        enterTransition.addListener(new SimpleTransitionListener(){
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                mViewPagerAdapter.getCurrentFragment().onTransitionEnd();
+            }
+        });
 
-        // A similar mapping is set at the GridFragment with a setExitSharedElementCallback.
+        Transition returnTransition =
+                TransitionInflater.from(getContext())
+                        .inflateTransition(R.transition.image_shared_element_transition);
+
+        setSharedElementEnterTransition(enterTransition);
+        setSharedElementReturnTransition(returnTransition);
+        setEnterTransition(new Fade());
+
         setEnterSharedElementCallback(new SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
@@ -92,7 +123,8 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                 }
 
                 // Map the first shared element name to the child ImageView.
-                sharedElements.put(names.get(0), view.findViewById(R.id.iv_image));
+                View sharedView = view.findViewById(R.id.iv_image);
+                sharedElements.put(names.get(0), sharedView);
             }
         });
     }

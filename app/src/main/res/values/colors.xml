@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Yandex Disk colors from guidelines
+    #000000 black
+    #ffcc00 yellow
+    #ff0000 red
+    #808285 gray
+    #e6e6e6 light gray
+    #4981d7 blue
+    -->
     <color name="colorPrimary">#FAFAFA</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#03A9F4</color>
+    <color name="colorAccent">#4981d7</color>
 
     <color name="colorWindowBackground">#EEEEEE</color>
 
-    <color name="colorImagePlaceHolder">#EEEEEE</color>
+    <color name="colorImagePlaceHolder">#e6e6e6</color>
 
     <color name="colorTextDark">#000000</color>
     <color name="colorTextLight">#ffffff</color>
 
-    <color name="colorImageDetailBackground">#EEEEEE</color>
+    <color name="colorImageDetailBackground">#000000</color>
 
     <color name="colorLogInButton">#000000</color>
 </resources>

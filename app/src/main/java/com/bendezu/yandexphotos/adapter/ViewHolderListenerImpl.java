@@ -60,7 +60,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
                 .beginTransaction()
                 .setReorderingAllowed(true) // Optimize for shared element transition
                 .addSharedElement(transitioningView, transitioningView.getTransitionName())
-                .replace(R.id.fragment_container, new ImageDetailFragment())
+                .replace(R.id.fragment_container, new ImageDetailFragment(), ImageDetailFragment.TAG)
                 .addToBackStack(null)
                 .commit();
     }

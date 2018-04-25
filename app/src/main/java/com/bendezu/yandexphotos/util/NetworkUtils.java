@@ -23,16 +23,14 @@ import com.bumptech.glide.request.target.Target;
 
 public class NetworkUtils {
 
-    public static final String PASSWORD = "f9e3d8ad13624c0985b2da84af91b310";
-
     //OAuth URL constants
-    public static final String OAUTH_URL = "https://oauth.yandex.ru/authorize";
-    public static final String QUESTION_MARK = "?";
-    public static final String RESPONSE_TYPE = "token";
-    public static final String AMPERSAND = "&";
-    public static final String CLIENT_ID = "27b1814298ef4a65907b9384adceafc4";
+    private static final String OAUTH_URL = "https://oauth.yandex.ru/authorize";
+    private static final String QUESTION_MARK = "?";
+    private static final String RESPONSE_TYPE = "token";
+    private static final String AMPERSAND = "&";
+    private static final String CLIENT_ID = "27b1814298ef4a65907b9384adceafc4";
     public static final String REDIRECT_URI = "yandexphotos://token";
-    public static final String FORCE_CONFIRM = "true";
+    private static final String FORCE_CONFIRM = "true";
 
     public static String buildAuthUrl(){
         return OAUTH_URL + QUESTION_MARK
@@ -54,8 +52,8 @@ public class NetworkUtils {
                 .build());
     }
 
-    public static void loadImage(RequestManager requestManager, String imageUrl,
-                                 ImageView view, RequestListener<Drawable> listener){
+    public static void loadImageItem(RequestManager requestManager, String imageUrl,
+                                     ImageView view, RequestListener<Drawable> listener){
         if (imageUrl == null) {
             view.setImageResource(R.drawable.no_image);
             return;
@@ -68,22 +66,25 @@ public class NetworkUtils {
                 .into(view);
     }
 
-    public static void loadImageDetail(Fragment fragment, String imageUrl, String thumbnailUrl,
-                                       ImageView view, RequestListener<Drawable> listener,
-                                       RequestListener<Drawable> thumbnailListener){
+    public static void loadImageTransition(Fragment fragment, String thumbnailUrl,
+                                           ImageView view, RequestListener<Drawable> listener){
         if (thumbnailUrl == null) {
             view.setImageResource(R.drawable.no_image);
             return;
         }
-//        RequestBuilder<Drawable> thumbnailRequest = Glide
-//                .with(fragment)
-//                .load(thumbnailUrl)
-//                .apply(new RequestOptions().dontTransform())
-//                .listener(thumbnailListener);
         Glide.with(fragment)
                 .load(getGlideUrl(thumbnailUrl))
                 .apply(new RequestOptions().dontTransform().override(Target.SIZE_ORIGINAL))
-                //.thumbnail(thumbnailRequest)
+                .listener(listener)
+                .into(view);
+    }
+
+    public static void loadFullsizeImage(Fragment fragment, String imageUrl,
+                                    ImageView view, RequestListener<Drawable> listener){
+
+        Glide.with(fragment)
+                .load(getGlideUrl(imageUrl))
+                .apply(new RequestOptions().dontTransform())
                 .listener(listener)
                 .into(view);
     }

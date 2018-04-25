@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bendezu.yandexphotos.App;
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.data.GalleryContract;
 import com.bendezu.yandexphotos.util.NetworkUtils;
-import com.bendezu.yandexphotos.util.PreferencesUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
@@ -92,7 +90,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
             mCursor.moveToPosition(position);
             String preview = mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_PREVIEW);
 
-            NetworkUtils.loadImage(mRequestManager, preview, image, this);
+            NetworkUtils.loadImageItem(mRequestManager, preview, image, this);
         }
 
         @Override

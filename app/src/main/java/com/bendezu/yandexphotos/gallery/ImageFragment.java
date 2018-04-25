@@ -16,7 +16,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-public class ImageFragment extends Fragment implements RequestListener<Drawable> {
+public class ImageFragment extends Fragment implements ImageDetailFragment.ImageDetailListener {
 
     private static final String KEY_POSITION = "position";
     private static final String KEY_THUMBNAIL_URL = "thumbnailUrl";
@@ -32,6 +32,12 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
         return fragment;
     }
 
+    private int position;
+    String thumbnailUrl;
+    private String imageUrl;
+    ImageView transitionImage;
+    ImageView fullImage;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -39,33 +45,61 @@ public class ImageFragment extends Fragment implements RequestListener<Drawable>
 
         View view = inflater.inflate(R.layout.fragment_image, container, false);
 
-        ImageView image = view.findViewById(R.id.iv_image);
+        transitionImage = view.findViewById(R.id.iv_image);
+        fullImage = view.findViewById(R.id.iv_fullsize);
 
         Bundle arguments = getArguments();
-        int position = arguments.getInt(KEY_POSITION);
-        String thumbnailUrl = arguments.getString(KEY_THUMBNAIL_URL);
-        String imageUrl = arguments.getString(KEY_IMAGE_URL);
+        position = arguments.getInt(KEY_POSITION);
+        thumbnailUrl = arguments.getString(KEY_THUMBNAIL_URL);
+        imageUrl = arguments.getString(KEY_IMAGE_URL);
 
-        image.setTransitionName(String.valueOf(position));
+        transitionImage.setTransitionName(String.valueOf(position));
 
-        NetworkUtils.loadImageDetail(this, imageUrl, thumbnailUrl, image,
-                this, this);
+        if (savedInstanceState == null)
+            showTransitionImage();
 
+        NetworkUtils.loadImageTransition(this, thumbnailUrl, transitionImage,
+            new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                            Target<Drawable> target, boolean isFirstResource) {
+                    getParentFragment().startPostponedEnterTransition();
+                    return false;
+                }
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+                                               DataSource dataSource, boolean isFirstResource) {
+                    getParentFragment().startPostponedEnterTransition();
+                    return false;
+                }
+            });
+
+        if (position != GalleryActivity.currentPosition)
+            showFullImage();
+
+        NetworkUtils.loadFullsizeImage(this, imageUrl, fullImage, null);
         return view;
     }
 
     @Override
-    public boolean onLoadFailed(@Nullable GlideException e, Object model,
-                                Target<Drawable> target, boolean isFirstResource) {
-        getParentFragment().startPostponedEnterTransition();
-        return false;
+    public void onTransitionEnd() {
+        showFullImage();
     }
 
     @Override
-    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
-                                   DataSource dataSource, boolean isFirstResource) {
-        getParentFragment().startPostponedEnterTransition();
-        return false;
+    public void onBackPressed() {
+        showTransitionImage();
+        getParentFragment().getFragmentManager().popBackStack();
+    }
+
+    private void showFullImage(){
+        fullImage.setVisibility(View.VISIBLE);
+        //transitionImage.setVisibility(View.INVISIBLE);
+    }
+
+    private void showTransitionImage(){
+        //transitionImage.setVisibility(View.VISIBLE);
+        fullImage.setVisibility(View.INVISIBLE);
     }
 
 }
