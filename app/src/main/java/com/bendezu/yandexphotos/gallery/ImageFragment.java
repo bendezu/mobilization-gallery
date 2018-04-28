@@ -1,5 +1,6 @@
 package com.bendezu.yandexphotos.gallery;
 
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.github.chrisbanes.photoview.OnViewTapListener;
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class ImageFragment extends Fragment implements ImageDetailFragment.ImageDetailListener {
 
@@ -36,7 +39,7 @@ public class ImageFragment extends Fragment implements ImageDetailFragment.Image
     String thumbnailUrl;
     private String imageUrl;
     ImageView transitionImage;
-    ImageView fullImage;
+    PhotoView fullImage;
 
     @Nullable
     @Override
@@ -52,6 +55,24 @@ public class ImageFragment extends Fragment implements ImageDetailFragment.Image
         position = arguments.getInt(KEY_POSITION);
         thumbnailUrl = arguments.getString(KEY_THUMBNAIL_URL);
         imageUrl = arguments.getString(KEY_IMAGE_URL);
+
+
+
+        transitionImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ImageDetailFragment)getParentFragment()).onImageClicked();
+            }
+        });
+        fullImage.setOnViewTapListener(new OnViewTapListener() {
+            @Override
+            public void onViewTap(View view, float x, float y) {
+                ((ImageDetailFragment)getParentFragment()).onImageClicked();
+            }
+        });
+
+
+
 
         transitionImage.setTransitionName(String.valueOf(position));
 
@@ -77,7 +98,7 @@ public class ImageFragment extends Fragment implements ImageDetailFragment.Image
         if (position != GalleryActivity.currentPosition)
             showFullImage();
 
-        NetworkUtils.loadFullsizeImage(this, imageUrl, fullImage, null);
+        NetworkUtils.loadFullsizeImage(this, imageUrl, this.fullImage, null);
         return view;
     }
 
@@ -100,6 +121,11 @@ public class ImageFragment extends Fragment implements ImageDetailFragment.Image
     private void showTransitionImage(){
         //transitionImage.setVisibility(View.VISIBLE);
         fullImage.setVisibility(View.INVISIBLE);
+    }
+
+    public void resetImageZoom(){
+        fullImage.setDisplayMatrix(new Matrix());
+        fullImage.setSuppMatrix(new Matrix());
     }
 
 }

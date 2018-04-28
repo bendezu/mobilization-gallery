@@ -1,6 +1,8 @@
 package com.bendezu.yandexphotos.gallery;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
@@ -8,9 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.bendezu.yandexphotos.R;
@@ -34,6 +39,9 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
     private ImageViewPagerAdapter mViewPagerAdapter;
     private ImageButton mBackButton;
     private ImageButton mShareButton;
+    private FrameLayout mToolbar;
+
+    private GestureDetector mGestureDetector;
 
     public ImageDetailFragment() { }
 
@@ -42,14 +50,31 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_image_detail, container, false);
-
+        mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                if (mToolbar.getVisibility() == View.VISIBLE){
+                    mToolbar.setVisibility(View.GONE);
+                } else {
+                    mToolbar.setVisibility(View.VISIBLE);
+                }
+                return true;
+            }
+        });
         mViewPager = view.findViewById(R.id.image_view_pager);
         mBackButton = view.findViewById(R.id.back_button);
         mShareButton = view.findViewById(R.id.share_button);
+        mToolbar = view.findViewById(R.id.toolbar);
 
         mBackButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
 
+        mViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return mGestureDetector.onTouchEvent(motionEvent);
+            }
+        });
         mViewPager.setPageTransformer(true, new ParallaxPageTransformer());
         mViewPager.setPageMargin(Math.round(DimUtils.dpToPx(getContext(), 16)));
         mViewPagerAdapter = new ImageViewPagerAdapter(this);
@@ -58,6 +83,7 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
+                mViewPagerAdapter.getCurrentFragment().resetImageZoom();
                 GalleryActivity.currentPosition = position;
             }
         });
@@ -87,6 +113,24 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         mViewPagerAdapter.getCurrentFragment().onBackPressed();
     }
 
+    public void onImageClicked() {
+        if  (mToolbar.getVisibility() == View.VISIBLE){
+            mToolbar.animate()
+                    .translationY(-mToolbar.getHeight())
+                    .setListener(new AnimatorListenerAdapter(){
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+                            mToolbar.setVisibility(View.GONE);
+                        }
+                    });
+        } else {
+            mToolbar.animate().setListener(null);
+            mToolbar.setVisibility(View.VISIBLE);
+            mToolbar.animate()
+                    .translationY(0f);
+        }
+    }
+
     private void prepareSharedElementTransition() {
 
         Transition enterTransition =
@@ -110,10 +154,7 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         setEnterSharedElementCallback(new SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                // Locate the image view at the primary fragment (the ImageFragment that is currently
-                // visible). To locate the fragment, call instantiateItem with the selection position.
-                // At this stage, the method will simply return the fragment at the position and will
-                // not create a new one.
+
                 Fragment currentFragment = (Fragment) mViewPager.getAdapter()
                         .instantiateItem(mViewPager, GalleryActivity.currentPosition);
                 View view = currentFragment.getView();
