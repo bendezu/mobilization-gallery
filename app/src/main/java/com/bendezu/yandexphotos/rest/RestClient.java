@@ -7,7 +7,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,8 +24,6 @@ public class RestClient {
         cloudApi = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
                 .client(getClient())
-                //.setErrorHandler(new ErrorHandlerImpl())
-                //.setLogLevel(LOG_LEVEL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(CloudApi.class);

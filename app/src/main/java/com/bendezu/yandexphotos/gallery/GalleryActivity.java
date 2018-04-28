@@ -1,8 +1,8 @@
 package com.bendezu.yandexphotos.gallery;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.bendezu.yandexphotos.R;
 
@@ -33,12 +33,6 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(KEY_CURRENT_IMAGE_POSITION, currentPosition);
-    }
-
-    @Override
     public void onBackPressed() {
         Fragment imageDetailFragment = getSupportFragmentManager().findFragmentByTag(ImageDetailFragment.TAG);
         if (imageDetailFragment != null){
@@ -46,5 +40,11 @@ public class GalleryActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_IMAGE_POSITION, currentPosition);
     }
 }

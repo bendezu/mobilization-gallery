@@ -9,4 +9,13 @@
 
     <string name="access_denied">Access denied</string>
     <string name="no_network_message">No internet connection</string>
+
+    <string name="action_about">About</string>
+
+    <string name="app_description">Test application for</string>
+    <string name="year">2018</string>
+    <string name="author_name">Bendezu Vladislav</string>
+    <string name="author_title">Author</string>
+    <string name="link"><a href="https://www.academy.yandex.ru">academy.yandex.ru</a></string>
+    <string name="github_link">https://github.com/bendezu/mobilization-gallery</string>
 </resources>

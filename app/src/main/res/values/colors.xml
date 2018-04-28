@@ -22,4 +22,10 @@
     <color name="colorImageDetailBackground">#000000</color>
 
     <color name="colorLogInButton">#000000</color>
+    
+    <color name="swipe_refresh_1">#000000</color>
+    <color name="swipe_refresh_2">#4981d7</color>
+    <color name="swipe_refresh_3">#ff0000</color>
+    <color name="swipe_refresh_4">#ffcc00</color>
+
 </resources>

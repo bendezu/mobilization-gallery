@@ -95,6 +95,7 @@ public class GalleryAsyncLoader extends AsyncTaskLoader<String> {
             String created = resource.getCreated();
             String file = resource.getFile();
             String preview = resource.getPreview();
+            String mimeType = resource.getMimeType();
 
             ContentValues cv = new ContentValues();
             cv.put(GalleryContract.GalleryEntry.COLUMN_NAME, name);
@@ -102,6 +103,7 @@ public class GalleryAsyncLoader extends AsyncTaskLoader<String> {
             cv.put(GalleryContract.GalleryEntry.COLUMN_CREATED, created);
             cv.put(GalleryContract.GalleryEntry.COLUMN_FILE, file);
             cv.put(GalleryContract.GalleryEntry.COLUMN_PREVIEW, preview);
+            cv.put(GalleryContract.GalleryEntry.COLUMN_MIME_TYPE, mimeType);
             values[i] = cv;
         }
         ContentResolver contentResolver = getContext().getContentResolver();
