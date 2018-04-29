@@ -1,7 +1,5 @@
 package com.bendezu.yandexphotos.util;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
@@ -9,16 +7,12 @@ import android.widget.ImageView;
 import com.bendezu.yandexphotos.App;
 import com.bendezu.yandexphotos.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-
 import com.bumptech.glide.request.target.Target;
 
 public class NetworkUtils {
@@ -52,10 +46,19 @@ public class NetworkUtils {
                 .build());
     }
 
+    private static void loadPlaceholder(RequestManager requestManager, ImageView view,
+                                        RequestListener<Drawable> listener) {
+        requestManager
+                .load(R.drawable.no_image)
+                .listener(listener)
+                .apply(new RequestOptions().dontTransform())
+                .into(view);
+    }
+
     public static void loadImageItem(RequestManager requestManager, String imageUrl,
-                                     ImageView view, RequestListener<Drawable> listener){
+                                     ImageView view, RequestListener<Drawable> listener) {
         if (imageUrl == null) {
-            view.setImageResource(R.drawable.no_image);
+            loadPlaceholder(requestManager, view, listener);
             return;
         }
         requestManager
@@ -69,7 +72,7 @@ public class NetworkUtils {
     public static void loadImageTransition(Fragment fragment, String thumbnailUrl,
                                            ImageView view, RequestListener<Drawable> listener){
         if (thumbnailUrl == null) {
-            view.setImageResource(R.drawable.no_image);
+            loadPlaceholder(Glide.with(fragment), view, listener);
             return;
         }
         Glide.with(fragment)

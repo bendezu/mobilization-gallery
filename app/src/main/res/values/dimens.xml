@@ -5,10 +5,11 @@
 
     <dimen name="image_item_margin">1dp</dimen>
 
-    <dimen name="toolBarElevation">4dp</dimen>
+    <dimen name="tool_bar_elevation">4dp</dimen>
     <dimen name="topBarHeight">56dp</dimen>
 
     <dimen name="appNameTextSize">22sp</dimen>
+    <dimen name="logo_size">90dp</dimen>
 
     <integer name="galleryColumns">3</integer>
 

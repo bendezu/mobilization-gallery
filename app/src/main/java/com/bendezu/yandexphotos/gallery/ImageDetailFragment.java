@@ -3,20 +3,22 @@ package com.bendezu.yandexphotos.gallery;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
@@ -28,11 +30,6 @@ import java.util.Map;
 
 public class ImageDetailFragment extends Fragment implements View.OnClickListener {
 
-    public interface ImageDetailListener{
-        void onTransitionEnd();
-        void onBackPressed();
-    }
-
     public static final String TAG = "ImageDetailFragment";
 
     private ViewPager mViewPager;
@@ -41,8 +38,6 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
     private ImageButton mShareButton;
     private FrameLayout mToolbar;
 
-    private GestureDetector mGestureDetector;
-
     public ImageDetailFragment() { }
 
     @Override
@@ -50,31 +45,22 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_image_detail, container, false);
-        mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (mToolbar.getVisibility() == View.VISIBLE){
-                    mToolbar.setVisibility(View.GONE);
-                } else {
-                    mToolbar.setVisibility(View.VISIBLE);
-                }
-                return true;
-            }
-        });
+
         mViewPager = view.findViewById(R.id.image_view_pager);
         mBackButton = view.findViewById(R.id.back_button);
         mShareButton = view.findViewById(R.id.share_button);
         mToolbar = view.findViewById(R.id.toolbar);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         mBackButton.setOnClickListener(this);
         mShareButton.setOnClickListener(this);
 
-        mViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return mGestureDetector.onTouchEvent(motionEvent);
-            }
-        });
         mViewPager.setPageTransformer(true, new ParallaxPageTransformer());
         mViewPager.setPageMargin(Math.round(DimUtils.dpToPx(getContext(), 16)));
         mViewPagerAdapter = new ImageViewPagerAdapter(this);
@@ -93,8 +79,6 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         if (savedInstanceState == null){
             postponeEnterTransition();
         }
-
-        return view;
     }
 
     @Override
@@ -104,13 +88,25 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                 onBackPressed();
                 break;
             case R.id.share_button:
-                //TODO
+                showProcessDialog();
                 break;
         }
     }
 
     public void onBackPressed() {
         mViewPagerAdapter.getCurrentFragment().onBackPressed();
+    }
+
+    private void showProcessDialog(){
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle(getString(R.string.progress_title));
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                Toast.makeText(getContext(), "canceled", Toast.LENGTH_SHORT).show();
+            }
+        });
+        progressDialog.show();
     }
 
     public void onImageClicked() {

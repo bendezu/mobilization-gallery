@@ -19,7 +19,7 @@ import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.OnViewTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 
-public class ImageFragment extends Fragment implements ImageDetailFragment.ImageDetailListener {
+public class ImageFragment extends Fragment {
 
     private static final String KEY_POSITION = "position";
     private static final String KEY_THUMBNAIL_URL = "thumbnailUrl";
@@ -102,12 +102,10 @@ public class ImageFragment extends Fragment implements ImageDetailFragment.Image
         return view;
     }
 
-    @Override
     public void onTransitionEnd() {
         showFullImage();
     }
 
-    @Override
     public void onBackPressed() {
         showTransitionImage();
         getParentFragment().getFragmentManager().popBackStack();
