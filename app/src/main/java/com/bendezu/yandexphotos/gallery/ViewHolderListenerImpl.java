@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.adapter;
+package com.bendezu.yandexphotos.gallery;
 
 import android.support.v4.app.Fragment;
 import android.transition.TransitionSet;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bendezu.yandexphotos.R;
-import com.bendezu.yandexphotos.gallery.GalleryActivity;
-import com.bendezu.yandexphotos.gallery.ImageDetailFragment;
+import com.bendezu.yandexphotos.adapter.ImageRecyclerViewAdapter;
+import com.bendezu.yandexphotos.imagedetail.ImageDetailFragment;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

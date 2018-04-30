@@ -1,6 +1,5 @@
 package com.bendezu.yandexphotos.adapter;
 
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bendezu.yandexphotos.R;
-import com.bendezu.yandexphotos.data.GalleryContract;
+import com.bendezu.yandexphotos.data.ImageDataSet;
+import com.bendezu.yandexphotos.gallery.ViewHolderListenerImpl;
 import com.bendezu.yandexphotos.util.NetworkUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -23,8 +23,7 @@ import com.bumptech.glide.request.target.Target;
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ImageViewHolder> {
 
-    private final RequestManager mRequestManager;
-    public static Cursor mCursor;
+    private final RequestManager requestManager;
 
     private ViewHolderListener mViewHolderListener;
 
@@ -34,7 +33,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     }
 
     public ImageRecyclerViewAdapter(Fragment fragment) {
-        mRequestManager = Glide.with(fragment);
+        requestManager = Glide.with(fragment);
         mViewHolderListener = new ViewHolderListenerImpl(fragment);
     }
 
@@ -42,7 +41,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.gallery_item, parent, false);
-        return new ImageViewHolder(view, mRequestManager, mViewHolderListener);
+        return new ImageViewHolder(view, requestManager, mViewHolderListener);
     }
 
     @Override
@@ -52,8 +51,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public int getItemCount() {
-        if (mCursor == null) return 0;
-        return mCursor.getCount();
+        return ImageDataSet.getCount();
     }
 
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RequestListener<Drawable> {
@@ -87,10 +85,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         }
 
         void downloadImage(int position){
-            mCursor.moveToPosition(position);
-            String preview = mCursor.getString(GalleryContract.GalleryEntry.INDEX_COLUMN_PREVIEW);
-
-            NetworkUtils.loadImageItem(mRequestManager, preview, image, this);
+            String preview = ImageDataSet.getPreviewUrl(position);
+            NetworkUtils.loadImageItem(ImageRecyclerViewAdapter.this.requestManager, preview, image, this);
         }
 
         @Override

@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.gallery;
+package com.bendezu.yandexphotos.imagedetail;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

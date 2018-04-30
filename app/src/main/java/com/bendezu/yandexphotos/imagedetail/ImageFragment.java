@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.gallery;
+package com.bendezu.yandexphotos.imagedetail;
 
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.data.ImageData;
+import com.bendezu.yandexphotos.data.ImageDataSet;
+import com.bendezu.yandexphotos.gallery.GalleryActivity;
 import com.bendezu.yandexphotos.util.NetworkUtils;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -22,22 +25,18 @@ import com.github.chrisbanes.photoview.PhotoView;
 public class ImageFragment extends Fragment {
 
     private static final String KEY_POSITION = "position";
-    private static final String KEY_THUMBNAIL_URL = "thumbnailUrl";
-    private static final String KEY_IMAGE_URL = "imageUrl";
 
-    public static ImageFragment newInstance(int position, String thumbnailUrl, String url) {
+    public static ImageFragment newInstance(int position) {
         ImageFragment fragment = new ImageFragment();
         Bundle argument = new Bundle();
         argument.putInt(KEY_POSITION, position);
-        argument.putString(KEY_THUMBNAIL_URL, thumbnailUrl);
-        argument.putString(KEY_IMAGE_URL, url);
         fragment.setArguments(argument);
         return fragment;
     }
 
     private int position;
-    String thumbnailUrl;
-    private String imageUrl;
+    private ImageData imageData;
+
     ImageView transitionImage;
     PhotoView fullImage;
 
@@ -53,10 +52,7 @@ public class ImageFragment extends Fragment {
 
         Bundle arguments = getArguments();
         position = arguments.getInt(KEY_POSITION);
-        thumbnailUrl = arguments.getString(KEY_THUMBNAIL_URL);
-        imageUrl = arguments.getString(KEY_IMAGE_URL);
-
-
+        imageData = ImageDataSet.getImageData(position);
 
         transitionImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,15 +67,13 @@ public class ImageFragment extends Fragment {
             }
         });
 
-
-
-
         transitionImage.setTransitionName(String.valueOf(position));
 
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             showTransitionImage();
+        }
 
-        NetworkUtils.loadImageTransition(this, thumbnailUrl, transitionImage,
+        NetworkUtils.loadImageTransition(this, imageData.getPreview(), transitionImage,
             new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model,
@@ -95,10 +89,11 @@ public class ImageFragment extends Fragment {
                 }
             });
 
-        if (position != GalleryActivity.currentPosition)
+        if (position != GalleryActivity.currentPosition) {
             showFullImage();
+        }
 
-        NetworkUtils.loadFullsizeImage(this, imageUrl, this.fullImage, null);
+        NetworkUtils.loadFullsizeImage(this, imageData.getFile(), this.fullImage, null);
         return view;
     }
 
@@ -111,6 +106,11 @@ public class ImageFragment extends Fragment {
         getParentFragment().getFragmentManager().popBackStack();
     }
 
+    public void resetImageZoom(){
+        fullImage.setDisplayMatrix(new Matrix());
+        fullImage.setSuppMatrix(new Matrix());
+    }
+
     private void showFullImage(){
         fullImage.setVisibility(View.VISIBLE);
         //transitionImage.setVisibility(View.INVISIBLE);
@@ -119,11 +119,6 @@ public class ImageFragment extends Fragment {
     private void showTransitionImage(){
         //transitionImage.setVisibility(View.VISIBLE);
         fullImage.setVisibility(View.INVISIBLE);
-    }
-
-    public void resetImageZoom(){
-        fullImage.setDisplayMatrix(new Matrix());
-        fullImage.setSuppMatrix(new Matrix());
     }
 
 }

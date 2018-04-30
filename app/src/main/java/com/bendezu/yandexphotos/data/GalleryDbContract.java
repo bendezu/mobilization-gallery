@@ -3,7 +3,7 @@ package com.bendezu.yandexphotos.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class GalleryContract {
+public class GalleryDbContract {
 
     public static final String CONTENT_AUTHORITY = "com.bendezu.yandexphotos";
 

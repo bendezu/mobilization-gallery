@@ -80,7 +80,7 @@ public class GalleryAsyncLoader extends AsyncTaskLoader<String> {
 
     private void truncateTable() {
         ContentResolver contentResolver = getContext().getContentResolver();
-        contentResolver.delete(GalleryContract.GalleryEntry.CONTENT_URI,
+        contentResolver.delete(GalleryDbContract.GalleryEntry.CONTENT_URI,
                 null, null);
     }
 
@@ -98,16 +98,16 @@ public class GalleryAsyncLoader extends AsyncTaskLoader<String> {
             String mimeType = resource.getMimeType();
 
             ContentValues cv = new ContentValues();
-            cv.put(GalleryContract.GalleryEntry.COLUMN_NAME, name);
-            cv.put(GalleryContract.GalleryEntry.COLUMN_PATH, path);
-            cv.put(GalleryContract.GalleryEntry.COLUMN_CREATED, created);
-            cv.put(GalleryContract.GalleryEntry.COLUMN_FILE, file);
-            cv.put(GalleryContract.GalleryEntry.COLUMN_PREVIEW, preview);
-            cv.put(GalleryContract.GalleryEntry.COLUMN_MIME_TYPE, mimeType);
+            cv.put(GalleryDbContract.GalleryEntry.COLUMN_NAME, name);
+            cv.put(GalleryDbContract.GalleryEntry.COLUMN_PATH, path);
+            cv.put(GalleryDbContract.GalleryEntry.COLUMN_CREATED, created);
+            cv.put(GalleryDbContract.GalleryEntry.COLUMN_FILE, file);
+            cv.put(GalleryDbContract.GalleryEntry.COLUMN_PREVIEW, preview);
+            cv.put(GalleryDbContract.GalleryEntry.COLUMN_MIME_TYPE, mimeType);
             values[i] = cv;
         }
         ContentResolver contentResolver = getContext().getContentResolver();
-        contentResolver.bulkInsert(GalleryContract.GalleryEntry.CONTENT_URI, values);
+        contentResolver.bulkInsert(GalleryDbContract.GalleryEntry.CONTENT_URI, values);
     }
 
     @Override

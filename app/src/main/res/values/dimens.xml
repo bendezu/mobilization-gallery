@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="image_item_margin">1dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="default_padding">16dp</dimen>
 
-    <dimen name="image_item_margin">1dp</dimen>
-
     <dimen name="tool_bar_elevation">4dp</dimen>
-    <dimen name="topBarHeight">56dp</dimen>
+    <dimen name="top_bar_height">56dp</dimen>
 
-    <dimen name="appNameTextSize">22sp</dimen>
     <dimen name="logo_size">90dp</dimen>
 
     <integer name="galleryColumns">3</integer>

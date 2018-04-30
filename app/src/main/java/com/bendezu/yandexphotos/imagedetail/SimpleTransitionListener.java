@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.gallery;
+package com.bendezu.yandexphotos.imagedetail;
 
 import android.transition.Transition;
 

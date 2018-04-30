@@ -1,4 +1,4 @@
-package com.bendezu.yandexphotos.gallery;
+package com.bendezu.yandexphotos.imagedetail;
 
 
 import android.animation.Animator;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
+import com.bendezu.yandexphotos.gallery.GalleryActivity;
 import com.bendezu.yandexphotos.util.DimUtils;
 
 import java.util.List;

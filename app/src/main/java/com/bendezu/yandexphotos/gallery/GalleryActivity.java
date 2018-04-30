@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bendezu.yandexphotos.R;
+import com.bendezu.yandexphotos.imagedetail.ImageDetailFragment;
 
 public class GalleryActivity extends AppCompatActivity {
 

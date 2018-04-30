@@ -18,9 +18,9 @@ public class GalleryProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = GalleryContract.CONTENT_AUTHORITY;
+        final String authority = GalleryDbContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, GalleryContract.PATH_GALLERY, CODE_GALLERY);
+        matcher.addURI(authority, GalleryDbContract.PATH_GALLERY, CODE_GALLERY);
 
         return matcher;
     }
@@ -42,7 +42,7 @@ public class GalleryProvider extends ContentProvider {
                 int rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insert(GalleryContract.GalleryEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(GalleryDbContract.GalleryEntry.TABLE_NAME, null, value);
                         if (_id != -1) rowsInserted++;
                     }
                     db.setTransactionSuccessful();
@@ -69,7 +69,7 @@ public class GalleryProvider extends ContentProvider {
 
             case CODE_GALLERY: {
                 cursor = mOpenHelper.getReadableDatabase().query(
-                        GalleryContract.GalleryEntry.TABLE_NAME,
+                        GalleryDbContract.GalleryEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -97,7 +97,7 @@ public class GalleryProvider extends ContentProvider {
 
             case CODE_GALLERY:
                 numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
-                        GalleryContract.GalleryEntry.TABLE_NAME,
+                        GalleryDbContract.GalleryEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
