@@ -35,6 +35,7 @@ public class ImageFragment extends Fragment {
     }
 
     private int position;
+
     private ImageData imageData;
 
     ImageView transitionImage;
@@ -104,6 +105,10 @@ public class ImageFragment extends Fragment {
     public void onBackPressed() {
         showTransitionImage();
         getParentFragment().getFragmentManager().popBackStack();
+    }
+
+    public ImageData getImageData() {
+        return imageData;
     }
 
     public void resetImageZoom(){

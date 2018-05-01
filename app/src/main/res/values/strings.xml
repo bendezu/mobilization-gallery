@@ -20,4 +20,5 @@
     <string name="github_link">https://github.com/bendezu/mobilization-gallery</string>
 
     <string name="progress_title">Processing image …</string>
+    <string name="share_image_chooser_title">Share image</string>
 </resources>

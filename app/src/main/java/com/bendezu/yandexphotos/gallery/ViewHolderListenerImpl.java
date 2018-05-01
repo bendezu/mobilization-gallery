@@ -23,7 +23,7 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
 
     @Override
     public void onLoadCompleted(ImageView view, int position) {
-        // Call startPostponedEnterTransition only when the 'selected' image loading is completed.
+        // Call startPostponedEnterTransition only when the selected image loading is completed.
         if (GalleryActivity.currentPosition != position) {
             return;
         }
@@ -33,28 +33,23 @@ public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHold
         fragment.startPostponedEnterTransition();
     }
 
-    /**
-     * Handles a view click by setting the current position to the given {@code position} and
-     * starting a {@link  ImageDetailFragment} which displays the image at the position.
-     *
-     * @param view the clicked {@link ImageView} (the shared element view will be re-mapped at the
-     * GridFragment's SharedElementCallback)
-     * @param position the selected view position
-     */
+    /*
+    Handles a view click by setting the current position to the given position and
+    starting a ImageDetailFragment which displays the image at the position.
+    */
     @Override
     public void onItemClicked(View view, int position) {
 
         GalleryActivity.currentPosition = position;
 
-        // Exclude the clicked card from the exit transition (e.g. the card will disappear immediately
-        // instead of fading out with the rest to prevent an overlapping animation of fade and move).
+        // Exclude the clicked card from the exit transition.
         ((TransitionSet) fragment.getExitTransition()).excludeTarget(view, true);
 
         ImageView transitioningView = view.findViewById(R.id.item_image);
 
         this.fragment.getFragmentManager()
                 .beginTransaction()
-                .setReorderingAllowed(true) // Optimize for shared element transition
+                .setReorderingAllowed(true)
                 .addSharedElement(transitioningView, transitioningView.getTransitionName())
                 .replace(R.id.fragment_container, new ImageDetailFragment(), ImageDetailFragment.TAG)
                 .addToBackStack(null)

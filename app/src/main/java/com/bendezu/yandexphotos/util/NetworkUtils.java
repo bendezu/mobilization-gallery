@@ -1,5 +1,6 @@
 package com.bendezu.yandexphotos.util;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
@@ -14,6 +15,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+
+import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 public class NetworkUtils {
 
@@ -90,6 +94,14 @@ public class NetworkUtils {
                 .apply(new RequestOptions().dontTransform())
                 .listener(listener)
                 .into(view);
+    }
+
+    public static File loadImageToFile(Context context, String imageUrl) throws ExecutionException, InterruptedException {
+        return Glide.with(context)
+                .downloadOnly()
+                .load(imageUrl)
+                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .get();
     }
 
 }
