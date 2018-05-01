@@ -8,37 +8,33 @@
 
     <ImageView
         android:id="@+id/iv_logo_photos"
-        android:layout_width="@dimen/photos_logo_size"
-        android:layout_height="@dimen/photos_logo_size"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/photos_logo_desc"
         android:src="@mipmap/ic_foreground"
         app:layout_constraintBottom_toTopOf="@+id/iv_logo_yandex"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/photos_logo_desc" />
+        app:layout_constraintEnd_toStartOf="@+id/tv_mobilization"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mobilization" />
 
     <ImageView
         android:id="@+id/iv_logo_yandex"
         android:layout_width="133dp"
         android:layout_height="44dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:contentDescription="@string/yandex_logo_desc"
         android:src="@mipmap/logo_yandex"
         app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/yandex_logo_desc" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_mobilization"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
         android:text="@string/mobilization"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_logo_yandex"
+        app:layout_constraintStart_toEndOf="@+id/iv_logo_yandex"
         app:layout_constraintTop_toTopOf="@+id/horizontal_guideline" />
 
     <android.support.constraint.Guideline
@@ -46,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.4" />
 
     <FrameLayout
         android:id="@+id/btn_log_in"

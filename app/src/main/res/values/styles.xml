@@ -10,4 +10,9 @@
 
     </style>
 
+
+    <style name="AuthActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
 </resources>

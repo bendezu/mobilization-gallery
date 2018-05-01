@@ -7,7 +7,7 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_photos"
         android:roundIcon="@mipmap/ic_photos_round"
         android:label="@string/app_name"
@@ -17,7 +17,7 @@
         <activity
             android:name=".authorization.AuthActivity"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AuthActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,8 +40,9 @@
         </activity>
         <activity
             android:name=".AboutActivity"
-            android:parentActivityName=".gallery.GalleryActivity">
-            <meta-data
+            android:parentActivityName=".gallery.GalleryActivity"
+            android:theme="@style/AppTheme">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".gallery.GalleryActivity"/>
         </activity>

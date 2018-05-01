@@ -4,7 +4,6 @@
     <string name="saved_access_token_key">access_token</string>
 
     <string name="log_in">LOG IN</string>
-    <string name="yandex">Yandex</string>
     <string name="mobilization">MOBILIZATION</string>
 
     <string name="access_denied">Access denied</string>
@@ -21,4 +20,17 @@
 
     <string name="progress_title">Processing image …</string>
     <string name="share_image_chooser_title">Share image</string>
+
+
+    <!-- ******************************
+    CONTENT DESCRIPTIONS
+    *********************************-->
+    <string name="photos_logo_desc">Photos app logo</string>
+    <string name="yandex_logo_desc">Yandex logo</string>
+    <string name="disk_logo_desc">Yandex.Disk logo</string>
+    <string name="author_photo_desc">Author photo</string>
+    <string name="github_logo_desc">Github logo</string>
+    <string name="back_button_desc">Back button</string>
+    <string name="share_button_desc">Share button</string>
+
 </resources>

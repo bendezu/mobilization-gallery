@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Фото</string>
+
+    <string name="log_in">ВХОД</string>
+    <string name="mobilization">МОБИЛИЗАЦИЯ</string>
+
+    <string name="access_denied">В доступе отказано</string>
+    <string name="no_network_message">Нет соединения</string>
+
+    <string name="action_about">О приложении</string>
+
+    <string name="app_description">Тестовое приложение для</string>
+    <string name="author_title">Автор</string>
+    <string name="author_name">Бендесу Владислав</string>
+
+    <string name="progress_title">Подготовка изображения …</string>
+    <string name="share_image_chooser_title">Отправить</string>
+
+
+    <!-- ******************************
+    CONTENT DESCRIPTIONS
+    *********************************-->
+    <string name="photos_logo_desc">Логотип приложения</string>
+    <string name="yandex_logo_desc">Логотип Яндеска</string>
+    <string name="disk_logo_desc">Логотип Яндекс Диска</string>
+    <string name="author_photo_desc">Фотография автора</string>
+    <string name="github_logo_desc">Логотип GitHub</string>
+    <string name="back_button_desc">Кнопка назад</string>
+    <string name="share_button_desc">Кнопка поделиться</string>
+
+</resources>

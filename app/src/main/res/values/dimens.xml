@@ -2,12 +2,19 @@
 <resources>
     <dimen name="image_item_margin">1dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
     <dimen name="default_padding">16dp</dimen>
 
     <dimen name="tool_bar_elevation">4dp</dimen>
-    <dimen name="top_bar_height">56dp</dimen>
+    <dimen name="card_rest_elevation">2dp</dimen>
 
-    <dimen name="logo_size">90dp</dimen>
+    <dimen name="top_bar_height">56dp</dimen>
+    <dimen name="author_card_height">100dp</dimen>
+    <dimen name="scrim_height">128dp</dimen>
+
+    <dimen name="photos_logo_size">90dp</dimen>
+    <dimen name="github_logo_size">20dp</dimen>
+    <dimen name="disk_logo_size">27dp</dimen>
 
     <integer name="galleryColumns">3</integer>
 

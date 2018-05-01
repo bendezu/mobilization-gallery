@@ -10,13 +10,12 @@
     <com.bendezu.yandexphotos.view.HackyViewPager
         android:id="@+id/image_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"/>
+        android:layout_height="match_parent"/>
 
     <FrameLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="128dp"
+        android:layout_height="@dimen/scrim_height"
         android:background="@drawable/gradient_scrim">
 
         <ImageButton
@@ -24,17 +23,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
+            android:layout_gravity="start"
             android:background="@drawable/ripple_white"
-            android:src="@drawable/ic_arrow_back" />
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/back_button_desc" />
 
         <ImageButton
             android:id="@+id/share_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:background="@drawable/ripple_white"
-            android:src="@drawable/ic_share" />
+            android:src="@drawable/ic_share"
+            android:contentDescription="@string/share_button_desc" />
 
     </FrameLayout>
 
