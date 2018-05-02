@@ -29,14 +29,23 @@ import com.bendezu.yandexphotos.authorization.AuthActivity;
 import com.bendezu.yandexphotos.data.GalleryAsyncLoader;
 import com.bendezu.yandexphotos.data.GalleryDbContract;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 
 public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
         GalleryContract.View {
 
-    private RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefresh;
-    private ImageRecyclerViewAdapter recyclerViewAdapter;
-    private LoaderManager loaderManager;
+    public static final String TAG = "GalleryFragment";
+
+    @BindView(R.id.gallery_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+    LoaderManager loaderManager;
+    ImageRecyclerViewAdapter recyclerViewAdapter;
+    Unbinder unbinder;
 
     private GalleryContract.Presenter presenter;
 
@@ -46,11 +55,8 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        unbinder = ButterKnife.bind(this, view);
 
-        recyclerView = view.findViewById(R.id.gallery_recycler_view);
-        swipeRefresh = view.findViewById(R.id.swipe_refresh);
-
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((GalleryActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
@@ -80,10 +86,22 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         postponeEnterTransition();
 
         loaderManager = getLoaderManager();
-        loaderManager.restartLoader(ID_UPDATE_LOADER, null, updateLoaderCallbacks);
+        if (savedInstanceState == null && shouldRestartLoader) {
+            loaderManager.restartLoader(ID_UPDATE_LOADER, null, updateLoaderCallbacks);
+        }
         loaderManager.initLoader(ID_CURSOR_LOADER, null, cursorLoaderCallbacks);
 
-        presenter.scrollToPosition(recyclerView);
+        if (shouldScroll) {
+            presenter.scrollToPosition(recyclerView);
+        }
+    }
+
+    boolean shouldScroll = false;
+    boolean shouldRestartLoader = true;
+
+    public void onResumeFromDetail(){
+        shouldScroll = true;
+        shouldRestartLoader = false;
     }
 
     private static final int ID_UPDATE_LOADER = 111;
@@ -101,6 +119,7 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         @Override
         public void onLoadFinished(Loader<String> loader, String data) {
             presenter.processResponseStatus(data);
+            getLoaderManager().destroyLoader(ID_UPDATE_LOADER);
         }
 
         @Override
@@ -176,5 +195,11 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void setSwipeRefreshing(boolean refreshing) {
         swipeRefresh.setRefreshing(refreshing);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

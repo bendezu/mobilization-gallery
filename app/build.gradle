@@ -34,14 +34,21 @@ dependencies {
 
     implementation 'com.android.support:design:26.1.0'
 
+    //Image loading and caching library
     implementation("com.github.bumptech.glide:glide:4.6.1") {
         exclude group: "com.android.support"
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 
+    //Implementation of ImageView that supports zooming
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 
+    //Type-safe HTTP client
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //Field and method binding for views
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 }

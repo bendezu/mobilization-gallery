@@ -22,6 +22,10 @@ import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.OnViewTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class ImageFragment extends Fragment {
 
     private static final String KEY_POSITION = "position";
@@ -34,12 +38,12 @@ public class ImageFragment extends Fragment {
         return fragment;
     }
 
+    @BindView(R.id.iv_image) ImageView transitionImage;
+    @BindView(R.id.iv_fullsize) PhotoView fullImage;
+
     private int position;
-
     private ImageData imageData;
-
-    ImageView transitionImage;
-    PhotoView fullImage;
+    private Unbinder unbinder;
 
     @Nullable
     @Override
@@ -47,13 +51,18 @@ public class ImageFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_image, container, false);
-
-        transitionImage = view.findViewById(R.id.iv_image);
-        fullImage = view.findViewById(R.id.iv_fullsize);
+        unbinder = ButterKnife.bind(this, view);
 
         Bundle arguments = getArguments();
         position = arguments.getInt(KEY_POSITION);
         imageData = ImageDataSet.getImageData(position);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         transitionImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,29 +82,26 @@ public class ImageFragment extends Fragment {
         if (savedInstanceState == null) {
             showTransitionImage();
         }
-
         NetworkUtils.loadImageTransition(this, imageData.getPreview(), transitionImage,
-            new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model,
-                                            Target<Drawable> target, boolean isFirstResource) {
-                    getParentFragment().startPostponedEnterTransition();
-                    return false;
-                }
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
-                                               DataSource dataSource, boolean isFirstResource) {
-                    getParentFragment().startPostponedEnterTransition();
-                    return false;
-                }
-            });
+                new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
+                        getParentFragment().startPostponedEnterTransition();
+                        return false;
+                    }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+                                                   DataSource dataSource, boolean isFirstResource) {
+                        getParentFragment().startPostponedEnterTransition();
+                        return false;
+                    }
+                });
 
         if (position != GalleryActivity.currentPosition) {
             showFullImage();
         }
-
         NetworkUtils.loadFullsizeImage(this, imageData.getFile(), this.fullImage, null);
-        return view;
     }
 
     public void onTransitionEnd() {
@@ -126,4 +132,9 @@ public class ImageFragment extends Fragment {
         fullImage.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

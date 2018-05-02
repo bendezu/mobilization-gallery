@@ -54,7 +54,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         return ImageDataSet.getCount();
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RequestListener<Drawable> {
+    public class ImageViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, RequestListener<Drawable> {
 
         public final View view;
         ImageView image;

@@ -91,7 +91,7 @@ public class NetworkUtils {
 
         Glide.with(fragment)
                 .load(getGlideUrl(imageUrl))
-                .apply(new RequestOptions().dontTransform())
+                //.apply(new RequestOptions().dontTransform())
                 .listener(listener)
                 .into(view);
     }

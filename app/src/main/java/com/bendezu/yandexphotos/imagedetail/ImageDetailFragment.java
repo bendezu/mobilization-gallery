@@ -33,40 +33,38 @@ import com.bendezu.yandexphotos.util.DimUtils;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
-public class ImageDetailFragment extends Fragment implements View.OnClickListener {
+
+public class ImageDetailFragment extends Fragment {
 
     public static final String TAG = "ImageDetailFragment";
     private final int ID_SHARE_LOADER = 333;
 
-    private ViewPager viewPager;
-    private ImageViewPagerAdapter viewPagerAdapter;
-    private ImageButton backButton;
-    private ImageButton shareButton;
-    private FrameLayout toolbar;
+    @BindView(R.id.image_view_pager) ViewPager viewPager;
+    @BindView(R.id.back_button) ImageButton backButton;
+    @BindView(R.id.share_button) ImageButton shareButton;
+    @BindView(R.id.toolbar) FrameLayout toolbar;
+
+    ImageViewPagerAdapter viewPagerAdapter;
+    Unbinder unbinder;
 
     public ImageDetailFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_image_detail, container, false);
-
-        viewPager = view.findViewById(R.id.image_view_pager);
-        backButton = view.findViewById(R.id.back_button);
-        shareButton = view.findViewById(R.id.share_button);
-        toolbar = view.findViewById(R.id.toolbar);
-
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        backButton.setOnClickListener(this);
-        shareButton.setOnClickListener(this);
 
         viewPager.setPageTransformer(true, new ParallaxPageTransformer());
         viewPager.setPageMargin(Math.round(DimUtils.dpToPx(getContext(), 16)));
@@ -82,30 +80,23 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
         });
 
         prepareSharedElementTransition();
-
         if (savedInstanceState == null){
             postponeEnterTransition();
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.back_button:
-                onBackPressed();
-                break;
-            case R.id.share_button:
-                shareImage(viewPagerAdapter.getCurrentFragment().getImageData());
-                break;
-        }
-    }
-
+    @OnClick(R.id.back_button)
     public void onBackPressed() {
-        viewPagerAdapter.getCurrentFragment().onBackPressed();
+        getActivity().onBackPressed();
+    }
+    public ImageFragment getCurrentFragment(){
+        return viewPagerAdapter.getCurrentFragment();
     }
 
-    private void shareImage(final ImageData imageData){
+    @OnClick(R.id.share_button)
+    public void shareImage(){
 
+        final ImageData imageData = viewPagerAdapter.getCurrentFragment().getImageData();
         final ProgressDialog progressDialog  = new ProgressDialog(getContext());
         progressDialog.setTitle(getString(R.string.progress_title));
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -126,7 +117,6 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                         throw new RuntimeException("Loader Not Implemented: " + id);
                 }
             }
-
             @Override
             public void onLoadFinished(Loader<Uri> loader, Uri uri) {
                 if (uri != null) {
@@ -142,7 +132,6 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                     startActivity(Intent.createChooser(shareIntent, getString(R.string.share_image_chooser_title)));
                 }
             }
-
             @Override
             public void onLoaderReset(Loader<Uri> loader) { }
         });
@@ -201,5 +190,11 @@ public class ImageDetailFragment extends Fragment implements View.OnClickListene
                 sharedElements.put(names.get(0), sharedView);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -26,10 +26,10 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     public void launchGalleryFragment() {
-        GalleryFragment mGalleryFragment = new GalleryFragment();
+        GalleryFragment galleryFragment = new GalleryFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, mGalleryFragment)
+                .add(R.id.fragment_container, galleryFragment, GalleryFragment.TAG)
                 .commit();
     }
 
@@ -37,7 +37,9 @@ public class GalleryActivity extends AppCompatActivity {
     public void onBackPressed() {
         Fragment imageDetailFragment = getSupportFragmentManager().findFragmentByTag(ImageDetailFragment.TAG);
         if (imageDetailFragment != null){
-            ((ImageDetailFragment)imageDetailFragment).onBackPressed();
+            ((ImageDetailFragment)imageDetailFragment).getCurrentFragment().onBackPressed();
+            Fragment galleryFragment = getSupportFragmentManager().findFragmentByTag(GalleryFragment.TAG);
+            ((GalleryFragment)galleryFragment).onResumeFromDetail();
         } else {
             super.onBackPressed();
         }

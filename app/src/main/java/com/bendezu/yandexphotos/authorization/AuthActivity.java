@@ -1,16 +1,21 @@
 package com.bendezu.yandexphotos.authorization;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.gallery.GalleryActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class AuthActivity extends AppCompatActivity implements AuthContract.View {
+
+    @BindView(R.id.btn_log_in) View logInButton;
 
     private AuthContract.Presenter presenter;
 
@@ -21,18 +26,17 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
 
         presenter = new AuthPresenter(this);
 
-        View logInButton = findViewById(R.id.btn_log_in);
-        logInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.startAuthProcess(AuthActivity.this);
-            }
-        });
+        ButterKnife.bind(this);
 
         if (savedInstanceState == null &&
                 presenter.getAccessToken(this) != null){
             launchGallery();
         }
+    }
+
+    @OnClick(R.id.btn_log_in)
+    public void logIn() {
+        presenter.startAuthProcess(this);
     }
 
     @Override
