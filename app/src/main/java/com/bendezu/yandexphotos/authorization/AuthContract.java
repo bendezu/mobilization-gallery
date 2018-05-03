@@ -16,7 +16,7 @@ public interface AuthContract {
 
         void startAuthProcess(Context context);
 
-        void verifyAccess(Intent intent, Context context);
+        void verifyAccess(Intent intent);
 
         String getAccessToken(Context context);
     }

@@ -46,7 +46,7 @@ public class GalleryAsyncLoader extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
 
-        String token = PreferencesUtils.getAccessToken(getContext());
+        String token = PreferencesUtils.getAccessToken();
         String status;
         RestClient client = new RestClient(token);
         ResourcesArgs args = new ResourcesArgs.Builder()

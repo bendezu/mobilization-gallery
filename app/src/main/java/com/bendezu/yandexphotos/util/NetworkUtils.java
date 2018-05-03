@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
-import com.bendezu.yandexphotos.App;
 import com.bendezu.yandexphotos.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -46,7 +45,7 @@ public class NetworkUtils {
     private static GlideUrl getGlideUrl(String imageUrl){
         return new GlideUrl(imageUrl, new LazyHeaders.Builder()
                 .addHeader("Authorization",
-                        "OAuth " + PreferencesUtils.getAccessToken(App.getContext()))
+                        "OAuth " + PreferencesUtils.getAccessToken())
                 .build());
     }
 

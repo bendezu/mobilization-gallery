@@ -87,11 +87,11 @@ public class GalleryFragmentPresenter implements GalleryContract.Presenter {
     public void processResponseStatus(String status) {
         switch (status) {
             case SUCCESS:
-                Toast.makeText(App.getContext(), status, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(App.getContext(), status, Toast.LENGTH_SHORT).show();
                 break;
             case UNAUTHORIZED:
                 //reset token
-                PreferencesUtils.setAccessToken(null, App.getContext());
+                PreferencesUtils.setAccessToken(null);
                 view.launchAuthScreen();
                 break;
             case NO_INTERNET_CONNECTION:

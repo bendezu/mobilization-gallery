@@ -24,10 +24,10 @@ public class AuthPresenter implements AuthContract.Presenter {
     }
 
     @Override
-    public void verifyAccess(Intent intent, Context context) {
+    public void verifyAccess(Intent intent) {
         Uri uri = intent.getData();
         if (uri != null &&
-                uri.toString().startsWith(NetworkUtils.REDIRECT_URI)){
+                uri.toString().startsWith(NetworkUtils.REDIRECT_URI)) {
 
             String error = UriUtils.getFragmentParameter(uri, "error");
             if (error != null) {
@@ -35,7 +35,7 @@ public class AuthPresenter implements AuthContract.Presenter {
             }
             String accessToken = UriUtils.getFragmentParameter(uri, "access_token");
             if (accessToken != null) {
-                PreferencesUtils.setAccessToken(accessToken, context);
+                PreferencesUtils.setAccessToken(accessToken);
                 view.launchGallery();
             }
         }
@@ -43,6 +43,6 @@ public class AuthPresenter implements AuthContract.Presenter {
 
     @Override
     public String getAccessToken(Context context) {
-        return PreferencesUtils.getAccessToken(context);
+        return PreferencesUtils.getAccessToken();
     }
 }

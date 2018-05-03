@@ -41,7 +41,7 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
 
     @Override
     protected void onNewIntent(Intent intent) {
-        presenter.verifyAccess(intent, this);
+        presenter.verifyAccess(intent);
         super.onNewIntent(intent);
     }
 
