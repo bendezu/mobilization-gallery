@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.bendezu.yandexphotos.R;
 import com.bendezu.yandexphotos.adapter.ImageViewPagerAdapter;
@@ -48,6 +49,7 @@ public class ImageDetailFragment extends Fragment {
     @BindView(R.id.back_button) ImageButton backButton;
     @BindView(R.id.share_button) ImageButton shareButton;
     @BindView(R.id.toolbar) FrameLayout toolbar;
+    @BindView(R.id.image_counter) TextView counter;
 
     ImageViewPagerAdapter viewPagerAdapter;
     Unbinder unbinder;
@@ -71,11 +73,13 @@ public class ImageDetailFragment extends Fragment {
         viewPagerAdapter = new ImageViewPagerAdapter(this);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setCurrentItem(GalleryActivity.currentPosition);
+        setCounter(GalleryActivity.currentPosition + 1);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
                 viewPagerAdapter.getCurrentFragment().resetImageZoom();
                 GalleryActivity.currentPosition = position;
+                setCounter(position + 1);
             }
         });
 
@@ -153,6 +157,11 @@ public class ImageDetailFragment extends Fragment {
             toolbar.animate()
                     .translationY(0f);
         }
+    }
+
+    private void setCounter(int position) {
+        String strCounter = getString(R.string.image_counter);
+        counter.setText(String.format(strCounter, position, viewPagerAdapter.getCount()));
     }
 
     private void prepareSharedElementTransition() {

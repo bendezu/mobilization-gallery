@@ -1,6 +1,7 @@
 package com.bendezu.yandexphotos;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.SystemClock;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.CoordinatesProvider;
@@ -15,6 +16,7 @@ import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.bendezu.yandexphotos.data.ImageDataSet;
 import com.bendezu.yandexphotos.gallery.GalleryActivity;
 import com.bendezu.yandexphotos.util.PreferencesUtils;
 
@@ -26,10 +28,13 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.bendezu.yandexphotos.AuthScreenTest.TEST_TOKEN;
 import static org.hamcrest.Matchers.not;
 
@@ -43,6 +48,7 @@ public class ImageDetailScreenTest {
             new ActivityTestRule<>(GalleryActivity.class, true, false);
 
     private String accessToken;
+    private final int INITIAL_POSITION = 1;
 
     @Before
     public void setUp() {
@@ -51,7 +57,7 @@ public class ImageDetailScreenTest {
         testRule.launchActivity(new Intent());
         //show image detail
         onView(withId(R.id.gallery_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(INITIAL_POSITION, click()));
     }
 
     @After
@@ -71,6 +77,25 @@ public class ImageDetailScreenTest {
         onView(isRoot()).perform(clickPercent(0.5f, 0.5f));
         SystemClock.sleep(100);
         onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void shouldChangeCounter_whenSliding() {
+        Resources resources = testRule.getActivity().getResources();
+        String strCounter = resources.getString(R.string.image_counter);
+        String expected = String.format(strCounter, INITIAL_POSITION + 1, ImageDataSet.getCount());
+        onView(withId(R.id.image_counter)).
+                check(matches(withText(expected)));
+
+        onView(withId(R.id.image_view_pager)).perform(swipeLeft());
+        expected = String.format(strCounter, INITIAL_POSITION + 2, ImageDataSet.getCount());
+        onView(withId(R.id.image_counter)).
+                check(matches(withText(expected)));
+
+        onView(withId(R.id.image_view_pager)).perform(swipeRight());
+        expected = String.format(strCounter, INITIAL_POSITION + 1, ImageDataSet.getCount());
+        onView(withId(R.id.image_counter)).
+                check(matches(withText(expected)));
     }
 
     public static ViewAction clickPercent(final float pctX, final float pctY){

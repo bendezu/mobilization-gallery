@@ -52,9 +52,9 @@ public class NetworkUtils {
     private static void loadPlaceholder(RequestManager requestManager, ImageView view,
                                         RequestListener<Drawable> listener) {
         requestManager
-                .load(R.drawable.no_image)
+                .load(R.mipmap.no_image)
                 .listener(listener)
-                .apply(new RequestOptions().dontTransform())
+                .apply(new RequestOptions().dontTransform().override(Target.SIZE_ORIGINAL))
                 .into(view);
     }
 
@@ -90,7 +90,6 @@ public class NetworkUtils {
 
         Glide.with(fragment)
                 .load(getGlideUrl(imageUrl))
-                //.apply(new RequestOptions().dontTransform())
                 .listener(listener)
                 .into(view);
     }

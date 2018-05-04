@@ -124,11 +124,9 @@ public class ImageFragment extends Fragment {
 
     private void showFullImage(){
         fullImage.setVisibility(View.VISIBLE);
-        //transitionImage.setVisibility(View.INVISIBLE);
     }
 
     private void showTransitionImage(){
-        //transitionImage.setVisibility(View.VISIBLE);
         fullImage.setVisibility(View.INVISIBLE);
     }
 

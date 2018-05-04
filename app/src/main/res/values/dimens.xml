@@ -15,6 +15,7 @@
     <dimen name="photos_logo_size">90dp</dimen>
     <dimen name="github_logo_size">20dp</dimen>
     <dimen name="disk_logo_size">27dp</dimen>
+    <dimen name="medium_text_size">18sp</dimen>
 
     <integer name="galleryColumns">3</integer>
 

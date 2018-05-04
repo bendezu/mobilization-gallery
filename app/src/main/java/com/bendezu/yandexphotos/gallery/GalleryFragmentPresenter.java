@@ -87,7 +87,7 @@ public class GalleryFragmentPresenter implements GalleryContract.Presenter {
     public void processResponseStatus(String status) {
         switch (status) {
             case SUCCESS:
-                //Toast.makeText(App.getContext(), status, Toast.LENGTH_SHORT).show();
+                // do nothing
                 break;
             case UNAUTHORIZED:
                 //reset token
