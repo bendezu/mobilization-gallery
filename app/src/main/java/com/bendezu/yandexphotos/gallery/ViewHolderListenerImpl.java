@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ViewHolderListenerImpl implements ImageRecyclerViewAdapter.ViewHolderListener {
 
-    private Fragment fragment;
-    private AtomicBoolean enterTransitionStarted;
+    private final Fragment fragment;
+    private final AtomicBoolean enterTransitionStarted;
 
     public ViewHolderListenerImpl(Fragment fragment) {
         this.fragment = fragment;

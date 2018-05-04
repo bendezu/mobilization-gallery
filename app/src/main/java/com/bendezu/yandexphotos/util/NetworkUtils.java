@@ -27,22 +27,16 @@ public class NetworkUtils {
     private static final String AMPERSAND = "&";
     private static final String CLIENT_ID = "27b1814298ef4a65907b9384adceafc4";
     public static final String REDIRECT_URI = "yandexphotos://token";
-    private static final String FORCE_CONFIRM = "true";
 
-    public static String buildAuthUrl(){
+    public static String buildAuthUrl() {
         return OAUTH_URL + QUESTION_MARK
                 + "response_type=" + RESPONSE_TYPE +
                 AMPERSAND + "client_id=" + CLIENT_ID +
                 AMPERSAND + "redirect_uri=" + REDIRECT_URI;
     }
 
-    //Forces authorization even if user has already authorized
-    public static String buildForceAuthUrl(){
-        return buildAuthUrl() + AMPERSAND + "force_confirm=" + FORCE_CONFIRM;
-    }
 
-
-    private static GlideUrl getGlideUrl(String imageUrl){
+    private static GlideUrl getGlideUrl(String imageUrl) {
         return new GlideUrl(imageUrl, new LazyHeaders.Builder()
                 .addHeader("Authorization",
                         "OAuth " + PreferencesUtils.getAccessToken())
@@ -73,7 +67,7 @@ public class NetworkUtils {
     }
 
     public static void loadImageTransition(Fragment fragment, String thumbnailUrl,
-                                           ImageView view, RequestListener<Drawable> listener){
+                                           ImageView view, RequestListener<Drawable> listener) {
         if (thumbnailUrl == null) {
             loadPlaceholder(Glide.with(fragment), view, listener);
             return;
@@ -86,14 +80,14 @@ public class NetworkUtils {
     }
 
     public static void loadFullsizeImage(Fragment fragment, String imageUrl,
-                                    ImageView view, RequestListener<Drawable> listener){
-
+                                    ImageView view, RequestListener<Drawable> listener) {
         Glide.with(fragment)
                 .load(getGlideUrl(imageUrl))
                 .listener(listener)
                 .into(view);
     }
 
+    // Get file from url for sharing
     public static File loadImageToFile(Context context, String imageUrl) throws ExecutionException, InterruptedException {
         return Glide.with(context)
                 .downloadOnly()

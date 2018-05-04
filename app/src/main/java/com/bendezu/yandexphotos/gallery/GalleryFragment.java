@@ -43,9 +43,9 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    LoaderManager loaderManager;
-    ImageRecyclerViewAdapter recyclerViewAdapter;
-    Unbinder unbinder;
+    private LoaderManager loaderManager;
+    private ImageRecyclerViewAdapter recyclerViewAdapter;
+    private Unbinder unbinder;
 
     private GalleryContract.Presenter presenter;
 
@@ -96,8 +96,8 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         }
     }
 
-    boolean shouldScroll = false;
-    boolean shouldRestartLoader = true;
+    private boolean shouldScroll = false;
+    private boolean shouldRestartLoader = true;
 
     public void onResumeFromDetail(){
         shouldScroll = true;
@@ -105,7 +105,7 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     private static final int ID_UPDATE_LOADER = 111;
-    private LoaderManager.LoaderCallbacks<String> updateLoaderCallbacks = new LoaderManager.LoaderCallbacks<String>() {
+    private final LoaderManager.LoaderCallbacks<String> updateLoaderCallbacks = new LoaderManager.LoaderCallbacks<String>() {
         @Override
         public Loader<String> onCreateLoader(int id, Bundle args) {
             switch (id) {
@@ -127,7 +127,7 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     };
 
     private static final int ID_CURSOR_LOADER = 222;
-    private LoaderManager.LoaderCallbacks<Cursor> cursorLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
+    private final LoaderManager.LoaderCallbacks<Cursor> cursorLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             switch (id) {

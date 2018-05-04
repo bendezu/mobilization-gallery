@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.bendezu.yandexphotos.R;
 
+// Transformer for ViewPager that implements parallax effect while sliding images
 public class ParallaxPageTransformer implements ViewPager.PageTransformer {
 
     @Override

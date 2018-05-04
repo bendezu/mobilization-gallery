@@ -29,7 +29,7 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
         ButterKnife.bind(this);
 
         if (savedInstanceState == null &&
-                presenter.getAccessToken(this) != null){
+                presenter.getAccessToken() != null){
             launchGallery();
         }
     }

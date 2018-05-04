@@ -51,8 +51,8 @@ public class ImageDetailFragment extends Fragment {
     @BindView(R.id.toolbar) FrameLayout toolbar;
     @BindView(R.id.image_counter) TextView counter;
 
-    ImageViewPagerAdapter viewPagerAdapter;
-    Unbinder unbinder;
+    private ImageViewPagerAdapter viewPagerAdapter;
+    private Unbinder unbinder;
 
     public ImageDetailFragment() { }
 

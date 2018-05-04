@@ -6,6 +6,7 @@ import retrofit2.http.Query;
 
 public interface CloudApi {
 
+    // GET method to fetch files ordered by uploading date from Yandex.Disk
     @GET("v1/disk/resources/last-uploaded")
     Call<ResourceList> getLastUploadedResources(
             @Query("limit") Integer limit, @Query("media_type") String mediaType,

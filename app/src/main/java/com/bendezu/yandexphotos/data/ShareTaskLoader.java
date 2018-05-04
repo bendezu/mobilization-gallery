@@ -10,9 +10,10 @@ import com.bendezu.yandexphotos.util.NetworkUtils;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
+// Loader loads image from URL into file and returns URI of that file
 public class ShareTaskLoader extends AsyncTaskLoader<Uri> {
 
-    private String url;
+    private final String url;
 
     @Override
     protected void onStartLoading() {

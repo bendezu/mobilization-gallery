@@ -23,7 +23,7 @@ import static com.bendezu.yandexphotos.data.GalleryAsyncLoader.UNEXPECTED;
 
 public class GalleryFragmentPresenter implements GalleryContract.Presenter {
 
-    private GalleryContract.View view;
+    private final GalleryContract.View view;
 
     public GalleryFragmentPresenter(GalleryContract.View view) {
         this.view = view;

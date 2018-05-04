@@ -29,5 +29,6 @@
     <string name="github_logo_desc">Логотип GitHub</string>
     <string name="back_button_desc">Кнопка назад</string>
     <string name="share_button_desc">Кнопка поделиться</string>
+    <string name="image_desc">Ваше изображение</string>
 
 </resources>

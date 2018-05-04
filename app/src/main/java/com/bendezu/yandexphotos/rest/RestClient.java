@@ -1,5 +1,7 @@
 package com.bendezu.yandexphotos.rest;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -16,7 +18,7 @@ public class RestClient {
 
     private final CloudApi cloudApi;
 
-    private String token;
+    private final String token;
 
     public RestClient(final String token) {
         this.token = token;
@@ -33,7 +35,7 @@ public class RestClient {
         return new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
+                    public Response intercept(@NonNull Chain chain) throws IOException {
                         Request originalRequest = chain.request();
 
                         Request newRequest = originalRequest.newBuilder()

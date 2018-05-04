@@ -9,7 +9,6 @@
         android:name=".App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_photos"
-        android:roundIcon="@mipmap/ic_photos_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

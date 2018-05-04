@@ -10,7 +10,7 @@ import com.bendezu.yandexphotos.util.UriUtils;
 
 public class AuthPresenter implements AuthContract.Presenter {
 
-    private AuthContract.View view;
+    private final AuthContract.View view;
 
     public AuthPresenter(AuthContract.View view) {
         this.view = view;
@@ -42,7 +42,7 @@ public class AuthPresenter implements AuthContract.Presenter {
     }
 
     @Override
-    public String getAccessToken(Context context) {
+    public String getAccessToken() {
         return PreferencesUtils.getAccessToken();
     }
 }

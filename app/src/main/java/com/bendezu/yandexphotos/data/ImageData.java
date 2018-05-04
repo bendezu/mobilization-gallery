@@ -1,12 +1,13 @@
 package com.bendezu.yandexphotos.data;
 
+// Data class for storing image data from database row
 public class ImageData {
 
-    private String name;
-    private String path;
-    private String created;
-    private String file;
-    private String preview;
+    private final String name;
+    private final String path;
+    private final String created;
+    private final String file;
+    private final String preview;
 
     public ImageData(String name, String path, String created, String file, String preview, String mimeType) {
         this.name = name;

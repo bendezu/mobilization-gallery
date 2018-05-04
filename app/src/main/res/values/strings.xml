@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Photos</string>
 
-    <string name="saved_access_token_key">access_token</string>
+    <string name="saved_access_token_key" translatable="false">access_token</string>
 
     <string name="log_in">LOG IN</string>
     <string name="mobilization">MOBILIZATION</string>
@@ -14,11 +14,11 @@
     <string name="action_about">About</string>
 
     <string name="app_description">Test application for</string>
-    <string name="link"><a href="https://www.academy.yandex.ru">academy.yandex.ru</a></string>
+    <string name="link" translatable="false"><a href="https://www.academy.yandex.ru">academy.yandex.ru</a></string>
     <string name="author_title">Author</string>
     <string name="author_name">Bendezu Vladislav</string>
-    <string name="year">2018</string>
-    <string name="github_link">https://github.com/bendezu/mobilization-gallery</string>
+    <string name="year" translatable="false">2018</string>
+    <string name="github_link" translatable="false">https://github.com/bendezu/mobilization-gallery</string>
 
     <string name="progress_title">Processing image …</string>
     <string name="share_image_chooser_title">Share image</string>
@@ -34,5 +34,6 @@
     <string name="github_logo_desc">Github logo</string>
     <string name="back_button_desc">Back button</string>
     <string name="share_button_desc">Share button</string>
+    <string name="image_desc">Your image</string>
 
 </resources>

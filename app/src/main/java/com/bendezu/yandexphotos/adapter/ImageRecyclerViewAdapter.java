@@ -25,7 +25,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     private final RequestManager requestManager;
 
-    private ViewHolderListener mViewHolderListener;
+    private final ViewHolderListener mViewHolderListener;
 
     public interface ViewHolderListener {
         void onLoadCompleted(ImageView view, int adapterPosition);
@@ -58,9 +58,9 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
             implements View.OnClickListener, RequestListener<Drawable> {
 
         public final View view;
-        ImageView image;
-        RequestManager requestManager;
-        ViewHolderListener listener;
+        final ImageView image;
+        final RequestManager requestManager;
+        final ViewHolderListener listener;
         int position;
 
         public ImageViewHolder(View view, RequestManager requestManager, ViewHolderListener listener) {
@@ -81,7 +81,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         }
 
         @Override
-        public void onClick(View view) {;
+        public void onClick(View view) {
             mViewHolderListener.onItemClicked(view, position);
         }
 
